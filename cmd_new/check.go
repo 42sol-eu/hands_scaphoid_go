@@ -50,11 +50,11 @@ See .scaphoid.yaml configuration for the default blacklist.`,
 		// Print summary
 		fmt.Println()
 		fmt.Println(formatSectionHeader("Summary", ""))
-		fmt.Printf("Total items checked: %d\n", stats.Total)
-		fmt.Printf("Files: %d\n", stats.Files)
-		fmt.Printf("Directories: %d\n", stats.Directories)
-		fmt.Printf("Links: %d\n", stats.Links)
-		fmt.Printf("Archives: %d\n", stats.Archives)
+		fmt.Printf("Total objects checked: %d\n", stats.Total)
+		fmt.Printf("- Files: %d\n", stats.Files)
+		fmt.Printf("- Directories: %d\n", stats.Directories)
+		fmt.Printf("- Links: %d\n", stats.Links)
+		fmt.Printf("- Archives: %d\n", stats.Archives)
 		fmt.Println()
 
 		if stats.Errors > 0 {
