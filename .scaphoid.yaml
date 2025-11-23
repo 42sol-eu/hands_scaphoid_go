@@ -1,0 +1,34 @@
+# Scaphoid Color Configuration
+colors:
+  # Color for action verbs (exists, create, delete, copy, move, etc.)
+  action:
+    color: "blue"
+    bold: true
+  
+  # Color for filesystem object types (file, directory, link, archive)
+  type:
+    color: "green"
+    bold: true
+  
+  # Color for error messages
+  error:
+    color: "red"
+    bold: true
+  
+  # Color for success messages
+  success:
+    color: "green"
+    bold: true
+  
+  # Color for paths
+  path:
+    color: "green"
+    bold: true
+  
+  # Color for keywords
+  keyword:
+    color: "green"
+    bold: true
+
+# Valid color values: black, red, green, yellow, blue, magenta, cyan, white
+# Set bold to true or false for each color category

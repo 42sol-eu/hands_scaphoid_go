@@ -1,0 +1,38 @@
+version: '3'
+
+vars:
+  PATH_BIN: "{{.TASKFILE_DIR}}/../bin"
+  PATH_TEST: ./test_data
+
+tasks:
+  setup:
+    desc: Set up test environment
+    deps: [teardown]
+    cmds:
+      - echo "Setting up test environment..."
+      - mkdir -p {{.PATH_TEST}}
+      - |
+        if [ -f "{{.PATH_BIN}}/scaphoid" ]; then \
+          echo "test: [INFO] Using existing scaphoid binary from {{.PATH_BIN}}"; \
+        else \
+          echo "test: [INFO] Building scaphoid binary for tests..."; \
+          go build -o {{.PATH_BIN}}/scaphoid .; \
+        fi
+      - cp {{.PATH_BIN}}/scaphoid .
+  
+  teardown:
+    desc: Tear down test environment
+    cmds:
+      - echo "test Tearing down test environment..."
+      - rm -rf {{.PATH_TEST}}/*
+      - rm -rf {{.PATH_TEST}}
+      - rm -f ./scaphoid
+  
+  create:
+    desc: create a file
+    cmds: 
+      - echo "test [INFO] Running file create..."
+      - ./scaphoid file create {{.PATH_TEST}}/test_file.txt
+      - ./scaphoid file list {{.PATH_TEST}}/test_file.txt
+
+  

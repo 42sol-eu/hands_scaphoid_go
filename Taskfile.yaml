@@ -42,42 +42,21 @@ tasks:
       # Uncomment if you have golangci-lint installed
       # - golangci-lint run
 
-  build:action-commands:
-    desc: Build all action-based commands
-    deps: [deps, fmt]
-    cmds:
-      - mkdir -p {{.BINARY_DIR}}
-      - |
-        for cmd in create list copy move delete info compare backup; do
-          echo "Building action command: $cmd"
-          go build -o {{.BINARY_DIR}}/$cmd ./cmd/$cmd
-        done
-
-  build:object-commands:
-    desc: Build all object-based commands
-    deps: [deps, fmt]
-    cmds:
-      - mkdir -p {{.BINARY_DIR}}
-      - |
-        for cmd in directory file link archive; do
-          echo "Building object command: $cmd"
-          go build -o {{.BINARY_DIR}}/$cmd ./cmd/$cmd
-        done
-
   build:
-    desc: Build all binaries
-    deps: [build:action-commands, build:object-commands]
+    desc: Build the unified scaphoid CLI binary
+    deps: [deps, fmt]
+    cmds:
+      - mkdir -p {{.BINARY_DIR}}
+      - echo "Building unified scaphoid CLI..."
+      - go build -o {{.BINARY_DIR}}/scaphoid .
 
   build:race:
-    desc: Build all binaries with race detection
+    desc: Build the unified scaphoid CLI binary with race detection
     deps: [deps, fmt]
     cmds:
       - mkdir -p {{.BINARY_DIR}}
-      - |
-        for cmd in create list copy move delete info compare backup directory file link archive; do
-          echo "Building $cmd with race detection"
-          go build -race -o {{.BINARY_DIR}}/$cmd-race ./cmd/$cmd
-        done
+      - echo "Building scaphoid with race detection..."
+      - go build -race -o {{.BINARY_DIR}}/scaphoid-race .
 
   test:
     desc: Run all tests
@@ -114,62 +93,50 @@ tasks:
       - go test -bench=. ./pkg/... ./tests/...
 
   install:
-    desc: Install all binaries to GOPATH/bin
+    desc: Install scaphoid binary to GOPATH/bin
     deps: [build]
     cmds:
-      - |
-        for cmd in create list copy move delete info compare backup directory file link archive; do
-          echo "Installing $cmd to $GOPATH/bin"
-          cp {{.BINARY_DIR}}/$cmd $GOPATH/bin/fs-$cmd
-        done
+      - echo "Installing scaphoid to $GOPATH/bin"
+      - cp {{.BINARY_DIR}}/scaphoid $GOPATH/bin/scaphoid
 
   install:local:
-    desc: Install binaries to /usr/local/bin (requires sudo)
+    desc: Install scaphoid binary to /usr/local/bin (requires sudo)
     deps: [build]
     cmds:
-      - |
-        for cmd in create list copy move delete info compare backup directory file link archive; do
-          echo "Installing $cmd to /usr/local/bin"
-          sudo cp {{.BINARY_DIR}}/$cmd /usr/local/bin/fs-$cmd
-        done
+      - echo "Installing scaphoid to /usr/local/bin"
+      - sudo cp {{.BINARY_DIR}}/scaphoid /usr/local/bin/scaphoid
 
   uninstall:
-    desc: Uninstall binaries from GOPATH/bin
+    desc: Uninstall scaphoid binary from GOPATH/bin
     cmds:
-      - |
-        for cmd in create list copy move delete info compare backup directory file link archive; do
-          rm -f $GOPATH/bin/fs-$cmd
-        done
+      - rm -f $GOPATH/bin/scaphoid
 
   uninstall:local:
-    desc: Uninstall binaries from /usr/local/bin (requires sudo)
+    desc: Uninstall scaphoid binary from /usr/local/bin (requires sudo)
     cmds:
-      - |
-        for cmd in create list copy move delete info compare backup directory file link archive; do
-          sudo rm -f /usr/local/bin/fs-$cmd
-        done
+      - sudo rm -f /usr/local/bin/scaphoid
 
   run:demo:
-    desc: Run a quick demo of the filesystem commands
+    desc: Run a quick demo of the scaphoid CLI
     deps: [build]
     cmds:
-      - echo "=== Filesystem Commands Demo ==="
+      - echo "=== Scaphoid CLI Demo ==="
       - echo "Creating test directory..."
-      - ./bin/create directory /tmp/fstest || echo "Directory might already exist"
+      - ./bin/scaphoid create directory /tmp/fstest || echo "Directory might already exist"
       - echo "Creating test file..."
-      - ./bin/create file /tmp/fstest/testfile.txt
+      - ./bin/scaphoid file create /tmp/fstest/testfile.txt
       - echo "Listing directory contents..."
-      - ./bin/list /tmp/fstest
+      - ./bin/scaphoid directory list /tmp/fstest
       - echo "Getting file info..."
-      - ./bin/info /tmp/fstest/testfile.txt
+      - ./bin/scaphoid info /tmp/fstest/testfile.txt
       - echo "Copying file..."
-      - ./bin/copy /tmp/fstest/testfile.txt /tmp/fstest/testfile_copy.txt
+      - ./bin/scaphoid copy /tmp/fstest/testfile.txt /tmp/fstest/testfile_copy.txt
       - echo "Creating archive..."
-      - ./bin/create archive /tmp/fstest.tar.gz --source /tmp/fstest
+      - ./bin/scaphoid create archive /tmp/fstest.tar.gz --source /tmp/fstest
       - echo "Listing archive contents..."
-      - ./bin/list /tmp/fstest.tar.gz
+      - ./bin/scaphoid list /tmp/fstest.tar.gz
       - echo "Cleaning up..."
-      - ./bin/delete /tmp/fstest --recursive --force
+      - ./bin/scaphoid delete /tmp/fstest --recursive --force
       - rm -f /tmp/fstest.tar.gz
       - echo "Demo completed!"
 
@@ -226,16 +193,14 @@ tasks:
               ext=""
             fi
             
-            echo "Building for $os/$arch..."
+            echo "Building scaphoid for $os/$arch..."
             mkdir -p releases/$os-$arch
             
-            for cmd in create list copy move delete info compare backup directory file link archive; do
-              GOOS=$os GOARCH=$arch go build -ldflags="-s -w" -o releases/$os-$arch/fs-$cmd$ext ./cmd/$cmd
-            done
+            GOOS=$os GOARCH=$arch go build -ldflags="-s -w" -o releases/$os-$arch/scaphoid$ext .
             
             # Create archive
             cd releases
-            tar -czf fs-commands-$os-$arch.tar.gz $os-$arch/
+            tar -czf scaphoid-$os-$arch.tar.gz $os-$arch/
             cd ..
           done
         done
