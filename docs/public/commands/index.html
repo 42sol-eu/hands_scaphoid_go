@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1314&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Command Reference# Complete reference for all Scaphoid filesystem commands. Each command supports both action-first and object-first syntax.
+Action Commands# create# Create new filesystem objects.
+Syntax:
+1 create [object-type] [path] [flags] Object types: directory, file, link, archive
+Flags:
+--force, -f - Force creation, overwrite existing --recursive, -r - Create parent directories if needed --target, -t - Target path for links (required for link creation) --source, -s - Source directory for archives Examples:
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1314/commands/">
+  <meta property="og:site_name" content="Scaphoid Filesystem Toolkit">
+  <meta property="og:title" content="Command Reference">
+  <meta property="og:description" content="Command Reference# Complete reference for all Scaphoid filesystem commands. Each command supports both action-first and object-first syntax.
+Action Commands# create# Create new filesystem objects.
+Syntax:
+1 create [object-type] [path] [flags] Object types: directory, file, link, archive
+Flags:
+--force, -f - Force creation, overwrite existing --recursive, -r - Create parent directories if needed --target, -t - Target path for links (required for link creation) --source, -s - Source directory for archives Examples:">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="website">
+
+
+  <meta itemprop="name" content="Command Reference">
+  <meta itemprop="description" content="Command Reference# Complete reference for all Scaphoid filesystem commands. Each command supports both action-first and object-first syntax.
+Action Commands# create# Create new filesystem objects.
+Syntax:
+1 create [object-type] [path] [flags] Object types: directory, file, link, archive
+Flags:
+--force, -f - Force creation, overwrite existing --recursive, -r - Create parent directories if needed --target, -t - Target path for links (required for link creation) --source, -s - Source directory for archives Examples:">
+  <meta itemprop="datePublished" content="2025-11-23T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-11-23T00:00:00+00:00">
+  <meta itemprop="wordCount" content="593">
+
+<title>Command Reference | Scaphoid Filesystem Toolkit</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1314/commands/">
+<link rel="stylesheet" href="/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css" integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj&#43;RQ9XBXU=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.a2e58b0dc7e01ec107ba5bb75489e2ade594e0340b62303438719909860c49e4.js" integrity="sha256-ouWLDcfgHsEHulu3VInireWU4DQLYjA0OHGZCYYMSeQ=" crossorigin="anonymous"></script>
+
+
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1314/commands/index.xml" title="Scaphoid Filesystem Toolkit" />
+
+  
+</head>
+<body dir="ltr" class="book-kind-section book-type-commands">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Scaphoid Filesystem Toolkit</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/commands/" class="active">
+      Command Reference</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/examples/" class="">
+      Examples</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/getting-started/" class="">
+      Getting Started</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="https://github.com/42sol-eu/hands_scaphoid_go" target="_blank" rel="noopener">Project on GitHub</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Command Reference</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#command-reference">Command Reference</a>
+      <ul>
+        <li><a href="#action-commands">Action Commands</a>
+          <ul>
+            <li><a href="#create">create</a></li>
+            <li><a href="#list">list</a></li>
+            <li><a href="#copy">copy</a></li>
+            <li><a href="#move">move</a></li>
+            <li><a href="#delete">delete</a></li>
+            <li><a href="#info">info</a></li>
+            <li><a href="#compare">compare</a></li>
+            <li><a href="#backup">backup</a></li>
+          </ul>
+        </li>
+        <li><a href="#object-commands">Object Commands</a>
+          <ul>
+            <li><a href="#directory">directory</a></li>
+            <li><a href="#file">file</a></li>
+            <li><a href="#link">link</a></li>
+            <li><a href="#archive">archive</a></li>
+          </ul>
+        </li>
+        <li><a href="#global-flags">Global Flags</a></li>
+        <li><a href="#exit-codes">Exit Codes</a></li>
+        <li><a href="#configuration">Configuration</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="command-reference">Command Reference<a class="anchor" href="#command-reference">#</a></h1>
+<p>Complete reference for all Scaphoid filesystem commands. Each command supports both action-first and object-first syntax.</p>
+<h2 id="action-commands">Action Commands<a class="anchor" href="#action-commands">#</a></h2>
+<h3 id="create">create<a class="anchor" href="#create">#</a></h3>
+<p>Create new filesystem objects.</p>
+<p><strong>Syntax:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>create <span style="color:#0550ae">[</span>object-type<span style="color:#0550ae">]</span> <span style="color:#0550ae">[</span>path<span style="color:#0550ae">]</span> <span style="color:#0550ae">[</span>flags<span style="color:#0550ae">]</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Object types:</strong> <code>directory</code>, <code>file</code>, <code>link</code>, <code>archive</code></p>
+<p><strong>Flags:</strong></p>
+<ul>
+<li><code>--force, -f</code> - Force creation, overwrite existing</li>
+<li><code>--recursive, -r</code> - Create parent directories if needed</li>
+<li><code>--target, -t</code> - Target path for links (required for link creation)</li>
+<li><code>--source, -s</code> - Source directory for archives</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>create directory /path/to/newdir
+</span></span><span style="display:flex;"><span>create file /path/to/newfile.txt
+</span></span><span style="display:flex;"><span>create link /path/to/link --target /path/to/target
+</span></span><span style="display:flex;"><span>create archive backup.tar.gz --source /path/to/backup</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h3 id="list">list<a class="anchor" href="#list">#</a></h3>
+<p>List contents of filesystem objects.</p>
+<p><strong>Syntax:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>list <span style="color:#0550ae">[</span>path<span style="color:#0550ae">]</span> <span style="color:#0550ae">[</span>flags<span style="color:#0550ae">]</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Flags:</strong></p>
+<ul>
+<li><code>--all, -a</code> - Show hidden files</li>
+<li><code>--long, -l</code> - Use long listing format</li>
+<li><code>--recursive, -r</code> - List subdirectories recursively</li>
+<li><code>--sort [name|size|time]</code> - Sort by specified field</li>
+<li><code>--reverse</code> - Reverse sort order</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>list /path/to/directory
+</span></span><span style="display:flex;"><span>list /path/to/archive.tar.gz
+</span></span><span style="display:flex;"><span>list /path/to/directory --long --all</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h3 id="copy">copy<a class="anchor" href="#copy">#</a></h3>
+<p>Copy filesystem objects.</p>
+<p><strong>Syntax:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>copy <span style="color:#0550ae">[</span>source<span style="color:#0550ae">]</span> <span style="color:#0550ae">[</span>destination<span style="color:#0550ae">]</span> <span style="color:#0550ae">[</span>flags<span style="color:#0550ae">]</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Flags:</strong></p>
+<ul>
+<li><code>--recursive, -r</code> - Copy directories recursively</li>
+<li><code>--force, -f</code> - Force copy, overwrite existing</li>
+<li><code>--preserve, -p</code> - Preserve metadata (permissions, timestamps)</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>copy file1.txt file2.txt
+</span></span><span style="display:flex;"><span>copy /path/to/source/dir /path/to/dest/dir --recursive
+</span></span><span style="display:flex;"><span>copy important.doc backup/ --preserve</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h3 id="move">move<a class="anchor" href="#move">#</a></h3>
+<p>Move or rename filesystem objects.</p>
+<p><strong>Syntax:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>move <span style="color:#0550ae">[</span>source<span style="color:#0550ae">]</span> <span style="color:#0550ae">[</span>destination<span style="color:#0550ae">]</span> <span style="color:#0550ae">[</span>flags<span style="color:#0550ae">]</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Flags:</strong></p>
+<ul>
+<li><code>--force, -f</code> - Force move, overwrite existing</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>move oldname.txt newname.txt
+</span></span><span style="display:flex;"><span>move /old/path /new/path
+</span></span><span style="display:flex;"><span>move file.txt /different/directory/</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h3 id="delete">delete<a class="anchor" href="#delete">#</a></h3>
+<p>Delete filesystem objects.</p>
+<p><strong>Syntax:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>delete <span style="color:#0550ae">[</span>path<span style="color:#0550ae">]</span> <span style="color:#0550ae">[</span>flags<span style="color:#0550ae">]</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Flags:</strong></p>
+<ul>
+<li><code>--force, -f</code> - Force deletion without confirmation</li>
+<li><code>--recursive, -r</code> - Delete directories recursively</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>delete unwanted.txt
+</span></span><span style="display:flex;"><span>delete /path/to/directory --recursive --force
+</span></span><span style="display:flex;"><span>delete broken_link</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h3 id="info">info<a class="anchor" href="#info">#</a></h3>
+<p>Get detailed information about filesystem objects.</p>
+<p><strong>Syntax:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>info <span style="color:#0550ae">[</span>path<span style="color:#0550ae">]</span> <span style="color:#0550ae">[</span>flags<span style="color:#0550ae">]</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Flags:</strong></p>
+<ul>
+<li><code>--all, -a</code> - Show all available information</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>info document.pdf
+</span></span><span style="display:flex;"><span>info /path/to/directory --all
+</span></span><span style="display:flex;"><span>info symlink</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h3 id="compare">compare<a class="anchor" href="#compare">#</a></h3>
+<p>Compare two filesystem objects.</p>
+<p><strong>Syntax:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>compare <span style="color:#0550ae">[</span>path1<span style="color:#0550ae">]</span> <span style="color:#0550ae">[</span>path2<span style="color:#0550ae">]</span> <span style="color:#0550ae">[</span>flags<span style="color:#0550ae">]</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Flags:</strong></p>
+<ul>
+<li><code>--deep, -d</code> - Perform deep comparison (content-based)</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>compare file1.txt file2.txt
+</span></span><span style="display:flex;"><span>compare /dir1 /dir2
+</span></span><span style="display:flex;"><span>compare original.jpg copy.jpg --deep</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h3 id="backup">backup<a class="anchor" href="#backup">#</a></h3>
+<p>Create backups of filesystem objects.</p>
+<p><strong>Syntax:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>backup <span style="color:#0550ae">[</span>source<span style="color:#0550ae">]</span> <span style="color:#0550ae">[</span>backup-directory<span style="color:#0550ae">]</span> <span style="color:#0550ae">[</span>flags<span style="color:#0550ae">]</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Flags:</strong></p>
+<ul>
+<li><code>--timestamp, -t</code> - Add timestamp to backup name (default: true)</li>
+<li><code>--compress, -c</code> - Compress backup</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>backup important.doc /backups/
+</span></span><span style="display:flex;"><span>backup /project /backups/ --compress
+</span></span><span style="display:flex;"><span>backup config.ini /safe/location/</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="object-commands">Object Commands<a class="anchor" href="#object-commands">#</a></h2>
+<h3 id="directory">directory<a class="anchor" href="#directory">#</a></h3>
+<p>Directory-specific operations.</p>
+<p><strong>Syntax:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>directory <span style="color:#0550ae">[</span>action<span style="color:#0550ae">]</span> <span style="color:#0550ae">[</span>arguments<span style="color:#0550ae">]</span> <span style="color:#0550ae">[</span>flags<span style="color:#0550ae">]</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Actions:</strong> <code>create</code>, <code>list</code>, <code>copy</code>, <code>move</code>, <code>delete</code></p>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>directory create /new/path
+</span></span><span style="display:flex;"><span>directory list /existing/path --long
+</span></span><span style="display:flex;"><span>directory copy /source /destination --recursive
+</span></span><span style="display:flex;"><span>directory move /old/path /new/path
+</span></span><span style="display:flex;"><span>directory delete /unwanted/path --recursive --force</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h3 id="file">file<a class="anchor" href="#file">#</a></h3>
+<p>File-specific operations.</p>
+<p><strong>Syntax:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>file <span style="color:#0550ae">[</span>action<span style="color:#0550ae">]</span> <span style="color:#0550ae">[</span>arguments<span style="color:#0550ae">]</span> <span style="color:#0550ae">[</span>flags<span style="color:#0550ae">]</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Actions:</strong> <code>create</code>, <code>list</code>, <code>copy</code>, <code>move</code>, <code>delete</code></p>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>file create newfile.txt
+</span></span><span style="display:flex;"><span>file copy source.txt destination.txt
+</span></span><span style="display:flex;"><span>file move oldname.txt newname.txt
+</span></span><span style="display:flex;"><span>file delete unwanted.txt --force</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h3 id="link">link<a class="anchor" href="#link">#</a></h3>
+<p>Symbolic link operations.</p>
+<p><strong>Syntax:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>link <span style="color:#0550ae">[</span>action<span style="color:#0550ae">]</span> <span style="color:#0550ae">[</span>arguments<span style="color:#0550ae">]</span> <span style="color:#0550ae">[</span>flags<span style="color:#0550ae">]</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Actions:</strong> <code>create</code>, <code>list</code>, <code>copy</code>, <code>move</code>, <code>delete</code></p>
+<p><strong>Special flags for create:</strong></p>
+<ul>
+<li><code>--target, -t</code> - Target path for the symbolic link (required)</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>link create mylink --target /path/to/target
+</span></span><span style="display:flex;"><span>link list mylink
+</span></span><span style="display:flex;"><span>link copy mylink mylink_copy
+</span></span><span style="display:flex;"><span>link delete broken_link</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h3 id="archive">archive<a class="anchor" href="#archive">#</a></h3>
+<p>Archive file operations.</p>
+<p><strong>Syntax:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>archive <span style="color:#0550ae">[</span>action<span style="color:#0550ae">]</span> <span style="color:#0550ae">[</span>arguments<span style="color:#0550ae">]</span> <span style="color:#0550ae">[</span>flags<span style="color:#0550ae">]</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Actions:</strong> <code>create</code>, <code>list</code>, <code>copy</code>, <code>move</code>, <code>delete</code></p>
+<p><strong>Special flags for create:</strong></p>
+<ul>
+<li><code>--source, -s</code> - Source directory to archive</li>
+</ul>
+<p><strong>Examples:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>archive create backup.tar.gz --source /data
+</span></span><span style="display:flex;"><span>archive list backup.tar.gz
+</span></span><span style="display:flex;"><span>archive copy backup.tar.gz backup_copy.tar.gz
+</span></span><span style="display:flex;"><span>archive delete old_backup.tar.gz</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="global-flags">Global Flags<a class="anchor" href="#global-flags">#</a></h2>
+<p>These flags are available for most commands:</p>
+<ul>
+<li><code>--help, -h</code> - Show command help</li>
+<li><code>--version, -v</code> - Show version information (where applicable)</li>
+</ul>
+<h2 id="exit-codes">Exit Codes<a class="anchor" href="#exit-codes">#</a></h2>
+<ul>
+<li><code>0</code> - Success</li>
+<li><code>1</code> - General error</li>
+<li><code>2</code> - Usage error (invalid arguments)</li>
+</ul>
+<h2 id="configuration">Configuration<a class="anchor" href="#configuration">#</a></h2>
+<p>Currently, the commands use default settings. Future versions may support configuration files.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+  
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+    </span>
+    <span>
+    
+      <a href="/examples/" class="flex align-center">
+        <span>Examples</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#command-reference">Command Reference</a>
+      <ul>
+        <li><a href="#action-commands">Action Commands</a>
+          <ul>
+            <li><a href="#create">create</a></li>
+            <li><a href="#list">list</a></li>
+            <li><a href="#copy">copy</a></li>
+            <li><a href="#move">move</a></li>
+            <li><a href="#delete">delete</a></li>
+            <li><a href="#info">info</a></li>
+            <li><a href="#compare">compare</a></li>
+            <li><a href="#backup">backup</a></li>
+          </ul>
+        </li>
+        <li><a href="#object-commands">Object Commands</a>
+          <ul>
+            <li><a href="#directory">directory</a></li>
+            <li><a href="#file">file</a></li>
+            <li><a href="#link">link</a></li>
+            <li><a href="#archive">archive</a></li>
+          </ul>
+        </li>
+        <li><a href="#global-flags">Global Flags</a></li>
+        <li><a href="#exit-codes">Exit Codes</a></li>
+        <li><a href="#configuration">Configuration</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

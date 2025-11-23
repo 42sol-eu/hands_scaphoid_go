@@ -1,0 +1,267 @@
+version: '3'
+
+vars:
+  BINARY_DIR: ./bin
+  CMD_DIR: ./cmd
+  PKG_DIR: ./pkg
+  TEST_DIR: ./tests
+  DOCS_DIR: ./docs
+  
+  # List of all executables
+  ACTION_COMMANDS: create,list,copy,move,delete,info,compare,backup
+  OBJECT_COMMANDS: directory,file,link,archive
+
+tasks:
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list
+
+  deps:
+    desc: Download and install dependencies
+    cmds:
+      - go mod download
+      - go mod tidy
+
+  clean:
+    desc: Clean built binaries and temporary files
+    cmds:
+      - rm -rf {{.BINARY_DIR}}
+      - go clean -cache
+      - go clean -testcache
+
+  fmt:
+    desc: Format Go code
+    cmds:
+      - go fmt ./...
+
+  lint:
+    desc: Run linters
+    cmds:
+      - go vet ./...
+      # Uncomment if you have golangci-lint installed
+      # - golangci-lint run
+
+  build:action-commands:
+    desc: Build all action-based commands
+    deps: [deps, fmt]
+    cmds:
+      - mkdir -p {{.BINARY_DIR}}
+      - |
+        for cmd in create list copy move delete info compare backup; do
+          echo "Building action command: $cmd"
+          go build -o {{.BINARY_DIR}}/$cmd ./cmd/$cmd
+        done
+
+  build:object-commands:
+    desc: Build all object-based commands
+    deps: [deps, fmt]
+    cmds:
+      - mkdir -p {{.BINARY_DIR}}
+      - |
+        for cmd in directory file link archive; do
+          echo "Building object command: $cmd"
+          go build -o {{.BINARY_DIR}}/$cmd ./cmd/$cmd
+        done
+
+  build:
+    desc: Build all binaries
+    deps: [build:action-commands, build:object-commands]
+
+  build:race:
+    desc: Build all binaries with race detection
+    deps: [deps, fmt]
+    cmds:
+      - mkdir -p {{.BINARY_DIR}}
+      - |
+        for cmd in create list copy move delete info compare backup directory file link archive; do
+          echo "Building $cmd with race detection"
+          go build -race -o {{.BINARY_DIR}}/$cmd-race ./cmd/$cmd
+        done
+
+  test:
+    desc: Run all tests
+    deps: [fmt]
+    cmds:
+      - go test ./pkg/... -v
+      - go test ./tests/... -v
+
+  test:race:
+    desc: Run tests with race detection
+    deps: [fmt]
+    cmds:
+      - go test -race ./pkg/... -v
+      - go test -race ./tests/... -v
+
+  test:coverage:
+    desc: Run tests with coverage
+    deps: [fmt]
+    cmds:
+      - mkdir -p coverage
+      - go test ./pkg/... ./tests/... -coverprofile=coverage/coverage.out -v
+      - go tool cover -html=coverage/coverage.out -o coverage/coverage.html
+      - echo "Coverage report generated at coverage/coverage.html"
+
+  test:integration:
+    desc: Run integration tests
+    deps: [build]
+    cmds:
+      - go test ./tests/integration/... -v -tags=integration
+
+  bench:
+    desc: Run benchmarks
+    cmds:
+      - go test -bench=. ./pkg/... ./tests/...
+
+  install:
+    desc: Install all binaries to GOPATH/bin
+    deps: [build]
+    cmds:
+      - |
+        for cmd in create list copy move delete info compare backup directory file link archive; do
+          echo "Installing $cmd to $GOPATH/bin"
+          cp {{.BINARY_DIR}}/$cmd $GOPATH/bin/fs-$cmd
+        done
+
+  install:local:
+    desc: Install binaries to /usr/local/bin (requires sudo)
+    deps: [build]
+    cmds:
+      - |
+        for cmd in create list copy move delete info compare backup directory file link archive; do
+          echo "Installing $cmd to /usr/local/bin"
+          sudo cp {{.BINARY_DIR}}/$cmd /usr/local/bin/fs-$cmd
+        done
+
+  uninstall:
+    desc: Uninstall binaries from GOPATH/bin
+    cmds:
+      - |
+        for cmd in create list copy move delete info compare backup directory file link archive; do
+          rm -f $GOPATH/bin/fs-$cmd
+        done
+
+  uninstall:local:
+    desc: Uninstall binaries from /usr/local/bin (requires sudo)
+    cmds:
+      - |
+        for cmd in create list copy move delete info compare backup directory file link archive; do
+          sudo rm -f /usr/local/bin/fs-$cmd
+        done
+
+  run:demo:
+    desc: Run a quick demo of the filesystem commands
+    deps: [build]
+    cmds:
+      - echo "=== Filesystem Commands Demo ==="
+      - echo "Creating test directory..."
+      - ./bin/create directory /tmp/fstest || echo "Directory might already exist"
+      - echo "Creating test file..."
+      - ./bin/create file /tmp/fstest/testfile.txt
+      - echo "Listing directory contents..."
+      - ./bin/list /tmp/fstest
+      - echo "Getting file info..."
+      - ./bin/info /tmp/fstest/testfile.txt
+      - echo "Copying file..."
+      - ./bin/copy /tmp/fstest/testfile.txt /tmp/fstest/testfile_copy.txt
+      - echo "Creating archive..."
+      - ./bin/create archive /tmp/fstest.tar.gz --source /tmp/fstest
+      - echo "Listing archive contents..."
+      - ./bin/list /tmp/fstest.tar.gz
+      - echo "Cleaning up..."
+      - ./bin/delete /tmp/fstest --recursive --force
+      - rm -f /tmp/fstest.tar.gz
+      - echo "Demo completed!"
+
+  docs:
+    desc: Generate documentation
+    cmds:
+      - task: docs:setup
+      - task: docs:build
+
+  docs:setup:
+    desc: Setup Hugo documentation site
+    cmds:
+      - |
+        if [ ! -d "{{.DOCS_DIR}}/site" ]; then
+          cd {{.DOCS_DIR}}
+          hugo new site site
+          cd site
+          git init
+          git submodule add https://github.com/theNewDynamic/gohugo-theme-ananke themes/ananke
+          echo "theme = 'ananke'" >> config.toml
+        fi
+
+  docs:build:
+    desc: Build documentation with Hugo
+    cmds:
+      - cd {{.DOCS_DIR}}/site && hugo
+
+  docs:serve:
+    desc: Serve documentation locally
+    cmds:
+      - cd {{.DOCS_DIR}}/site && hugo server -D
+
+  docs:clean:
+    desc: Clean documentation build
+    cmds:
+      - rm -rf {{.DOCS_DIR}}/site/public
+
+  release:
+    desc: Build release binaries for multiple platforms
+    deps: [clean, fmt, test]
+    cmds:
+      - mkdir -p releases
+      - task: release:build
+
+  release:build:
+    desc: Build release binaries
+    cmds:
+      - |
+        for os in linux darwin windows; do
+          for arch in amd64 arm64; do
+            if [ "$os" = "windows" ]; then
+              ext=".exe"
+            else
+              ext=""
+            fi
+            
+            echo "Building for $os/$arch..."
+            mkdir -p releases/$os-$arch
+            
+            for cmd in create list copy move delete info compare backup directory file link archive; do
+              GOOS=$os GOARCH=$arch go build -ldflags="-s -w" -o releases/$os-$arch/fs-$cmd$ext ./cmd/$cmd
+            done
+            
+            # Create archive
+            cd releases
+            tar -czf fs-commands-$os-$arch.tar.gz $os-$arch/
+            cd ..
+          done
+        done
+
+  dev:
+    desc: Development mode - watch for changes and rebuild
+    deps: [build]
+    cmds:
+      - echo "Development mode - watching for changes..."
+      - |
+        while true; do
+          inotifywait -r -e modify,create,delete cmd/ pkg/ 2>/dev/null || sleep 2
+          echo "Changes detected, rebuilding..."
+          task build
+        done
+
+  check:
+    desc: Run all checks (format, lint, test)
+    cmds:
+      - task: fmt
+      - task: lint  
+      - task: test
+
+  ci:
+    desc: Continuous Integration - run all checks and build
+    cmds:
+      - task: check
+      - task: build
+      - task: test:coverage

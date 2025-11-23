@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1314&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Examples and Common Workflows# This page provides practical examples and common workflows using the Scaphoid filesystem commands.
+Basic File Operations# Creating and Managing Files# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 # Create a new file create file notes.txt # or file create notes.txt # Get information about the file info notes.txt # Copy the file copy notes.txt notes_backup.txt # or file copy notes.txt notes_backup.txt # Rename the file move notes.txt important_notes.txt # or file move notes.txt important_notes.txt Working with Directories# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 # Create a project directory structure create directory project create directory project/src create directory project/tests create directory project/docs # Or using object-first syntax directory create project directory create project/src directory create project/tests directory create project/docs # List the structure list project --recursive # or directory list project --recursive # Copy entire directory copy project project_backup --recursive # or directory copy project project_backup --recursive Advanced Operations# Working with Symbolic Links# 1 2 3 4 5 6 7 8 9 10 11 12 13 # Create a symbolic link to a file create link current_config.json --target /etc/app/config.json # or link create current_config.json --target /etc/app/config.json # Create a link to a directory create link current_data --target /var/lib/app/data # or link create current_data --target /var/lib/app/data # List the link (shows target) info current_config.json list current_data Archive Management# 1 2 3 4 5 6 7 8 9 10 11 12 # Create an archive from a directory create archive project_backup.tar.gz --source project # or archive create project_backup.tar.gz --source project # List archive contents list project_backup.tar.gz # or archive list project_backup.tar.gz # Compare original with extracted version (after extraction) compare project extracted_project Common Workflows# Project Setup Workflow# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 #!/bin/bash # Setup a new Go project structure PROJECT_NAME=&#34;myproject&#34; # Create main directories create directory $PROJECT_NAME create directory $PROJECT_NAME/cmd create directory $PROJECT_NAME/pkg create directory $PROJECT_NAME/internal create directory $PROJECT_NAME/api create directory $PROJECT_NAME/web create directory $PROJECT_NAME/scripts create directory $PROJECT_NAME/deployments create directory $PROJECT_NAME/test create directory $PROJECT_NAME/docs # Create initial files create file $PROJECT_NAME/README.md create file $PROJECT_NAME/go.mod create file $PROJECT_NAME/Makefile create file $PROJECT_NAME/.gitignore # Create symbolic link to current project link create current_project --target $PROJECT_NAME echo &#34;Project structure created!&#34; list $PROJECT_NAME --recursive Backup and Archive Workflow# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 #!/bin/bash # Complete backup workflow SOURCE_DIR=&#34;/important/data&#34; BACKUP_DIR=&#34;/backups&#34; DATE=$(date &#43;%Y%m%d) # Create backup directory for today create directory $BACKUP_DIR/$DATE # Create full backup archive create archive $BACKUP_DIR/$DATE/full_backup.tar.gz --source $SOURCE_DIR # Create individual file backups for critical files backup $SOURCE_DIR/config.json $BACKUP_DIR/$DATE/ backup $SOURCE_DIR/database.sqlite $BACKUP_DIR/$DATE/ # Verify backup integrity info $BACKUP_DIR/$DATE/full_backup.tar.gz list $BACKUP_DIR/$DATE/full_backup.tar.gz echo &#34;Backup completed for $DATE&#34; list $BACKUP_DIR/$DATE --long File Organization Workflow# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 #!/bin/bash # Organize downloads folder DOWNLOADS=&#34;/Users/$(whoami)/Downloads&#34; ORGANIZED=&#34;/Users/$(whoami)/Documents/Organized&#34; # Create organized structure create directory $ORGANIZED create directory $ORGANIZED/images create directory $ORGANIZED/documents create directory $ORGANIZED/archives create directory $ORGANIZED/others # Move files by type (simplified example) # In real usage, you&#39;d want more sophisticated file type detection # Get list of files list $DOWNLOADS &gt; /tmp/downloads_list.txt # Example of moving specific file types # Note: This is a simplified example - real implementation would need # proper file type detection and error handling echo &#34;Organizing files in $DOWNLOADS&#34; echo &#34;Created organized structure in $ORGANIZED&#34; list $ORGANIZED --recursive Synchronization Workflow# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 #!/bin/bash # Synchronize two directories SOURCE=&#34;/source/directory&#34; TARGET=&#34;/target/directory&#34; echo &#34;Synchronizing $SOURCE to $TARGET&#34; # Compare directories first compare $SOURCE $TARGET # If different, backup target and copy source if [ $? -ne 0 ]; then echo &#34;Directories differ, creating backup and syncing&#34; # Create backup of target backup $TARGET /backups/ # Remove target and copy source delete $TARGET --recursive --force copy $SOURCE $TARGET --recursive --preserve echo &#34;Synchronization complete&#34; else echo &#34;Directories are already synchronized&#34; fi Complex Examples# Multi-step Data Processing# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 #!/bin/bash # Process data files with staging WORKSPACE=&#34;/tmp/processing&#34; DATA_DIR=&#34;/data/input&#34; RESULTS_DIR=&#34;/data/output&#34; # Setup workspace create directory $WORKSPACE create directory $WORKSPACE/staging create directory $WORKSPACE/processed create directory $WORKSPACE/failed # Create links to data sources link create $WORKSPACE/input --target $DATA_DIR # Stage files for processing list $DATA_DIR | while read -r file; do if [[ $file == *.csv ]]; then copy &#34;$DATA_DIR/$file&#34; &#34;$WORKSPACE/staging/&#34; fi done echo &#34;Staged files:&#34; list $WORKSPACE/staging # After processing (placeholder for actual processing) # move processed files to results # move failed files to failed directory # Cleanup echo &#34;Processing complete, cleaning up workspace&#34; delete $WORKSPACE --recursive --force Configuration Management# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 #!/bin/bash # Manage application configurations CONFIG_BASE=&#34;/etc/myapp&#34; CONFIG_ENV=&#34;production&#34; # or development, staging, etc. # Create environment-specific config create directory $CONFIG_BASE/environments create directory $CONFIG_BASE/environments/$CONFIG_ENV # Copy base config copy $CONFIG_BASE/base-config.json $CONFIG_BASE/environments/$CONFIG_ENV/config.json # Create link to active config link create $CONFIG_BASE/active-config.json --target $CONFIG_BASE/environments/$CONFIG_ENV/config.json # Backup current configuration backup $CONFIG_BASE/environments/$CONFIG_ENV /backups/configs/ echo &#34;Configuration set to $CONFIG_ENV&#34; info $CONFIG_BASE/active-config.json Tips and Best Practices# Using with Scripts# Always check exit codes: 1 2 3 4 if ! create directory /important/path; then echo &#34;Failed to create directory&#34; exit 1 fi Use the --force flag carefully: 1 2 3 4 5 # Safe: only force when you&#39;re sure delete /tmp/safe-to-delete --force # Be careful with recursive deletes delete /path/to/directory --recursive --force Prefer explicit object types: 1 2 3 4 5 6 # More explicit and clear create directory mydir create file myfile.txt # Less clear what type will be created create myitem Performance Considerations# Use --recursive carefully with large directory trees For large archives, consider using the appropriate compression level When comparing large files, the --deep flag will be slower but more accurate Error Handling# Most commands return non-zero exit codes on failure:
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1314/examples/">
+  <meta property="og:site_name" content="Scaphoid Filesystem Toolkit">
+  <meta property="og:title" content="Examples">
+  <meta property="og:description" content="Examples and Common Workflows# This page provides practical examples and common workflows using the Scaphoid filesystem commands.
+Basic File Operations# Creating and Managing Files# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 # Create a new file create file notes.txt # or file create notes.txt # Get information about the file info notes.txt # Copy the file copy notes.txt notes_backup.txt # or file copy notes.txt notes_backup.txt # Rename the file move notes.txt important_notes.txt # or file move notes.txt important_notes.txt Working with Directories# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 # Create a project directory structure create directory project create directory project/src create directory project/tests create directory project/docs # Or using object-first syntax directory create project directory create project/src directory create project/tests directory create project/docs # List the structure list project --recursive # or directory list project --recursive # Copy entire directory copy project project_backup --recursive # or directory copy project project_backup --recursive Advanced Operations# Working with Symbolic Links# 1 2 3 4 5 6 7 8 9 10 11 12 13 # Create a symbolic link to a file create link current_config.json --target /etc/app/config.json # or link create current_config.json --target /etc/app/config.json # Create a link to a directory create link current_data --target /var/lib/app/data # or link create current_data --target /var/lib/app/data # List the link (shows target) info current_config.json list current_data Archive Management# 1 2 3 4 5 6 7 8 9 10 11 12 # Create an archive from a directory create archive project_backup.tar.gz --source project # or archive create project_backup.tar.gz --source project # List archive contents list project_backup.tar.gz # or archive list project_backup.tar.gz # Compare original with extracted version (after extraction) compare project extracted_project Common Workflows# Project Setup Workflow# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 #!/bin/bash # Setup a new Go project structure PROJECT_NAME=&#34;myproject&#34; # Create main directories create directory $PROJECT_NAME create directory $PROJECT_NAME/cmd create directory $PROJECT_NAME/pkg create directory $PROJECT_NAME/internal create directory $PROJECT_NAME/api create directory $PROJECT_NAME/web create directory $PROJECT_NAME/scripts create directory $PROJECT_NAME/deployments create directory $PROJECT_NAME/test create directory $PROJECT_NAME/docs # Create initial files create file $PROJECT_NAME/README.md create file $PROJECT_NAME/go.mod create file $PROJECT_NAME/Makefile create file $PROJECT_NAME/.gitignore # Create symbolic link to current project link create current_project --target $PROJECT_NAME echo &#34;Project structure created!&#34; list $PROJECT_NAME --recursive Backup and Archive Workflow# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 #!/bin/bash # Complete backup workflow SOURCE_DIR=&#34;/important/data&#34; BACKUP_DIR=&#34;/backups&#34; DATE=$(date &#43;%Y%m%d) # Create backup directory for today create directory $BACKUP_DIR/$DATE # Create full backup archive create archive $BACKUP_DIR/$DATE/full_backup.tar.gz --source $SOURCE_DIR # Create individual file backups for critical files backup $SOURCE_DIR/config.json $BACKUP_DIR/$DATE/ backup $SOURCE_DIR/database.sqlite $BACKUP_DIR/$DATE/ # Verify backup integrity info $BACKUP_DIR/$DATE/full_backup.tar.gz list $BACKUP_DIR/$DATE/full_backup.tar.gz echo &#34;Backup completed for $DATE&#34; list $BACKUP_DIR/$DATE --long File Organization Workflow# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 #!/bin/bash # Organize downloads folder DOWNLOADS=&#34;/Users/$(whoami)/Downloads&#34; ORGANIZED=&#34;/Users/$(whoami)/Documents/Organized&#34; # Create organized structure create directory $ORGANIZED create directory $ORGANIZED/images create directory $ORGANIZED/documents create directory $ORGANIZED/archives create directory $ORGANIZED/others # Move files by type (simplified example) # In real usage, you&#39;d want more sophisticated file type detection # Get list of files list $DOWNLOADS &gt; /tmp/downloads_list.txt # Example of moving specific file types # Note: This is a simplified example - real implementation would need # proper file type detection and error handling echo &#34;Organizing files in $DOWNLOADS&#34; echo &#34;Created organized structure in $ORGANIZED&#34; list $ORGANIZED --recursive Synchronization Workflow# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 #!/bin/bash # Synchronize two directories SOURCE=&#34;/source/directory&#34; TARGET=&#34;/target/directory&#34; echo &#34;Synchronizing $SOURCE to $TARGET&#34; # Compare directories first compare $SOURCE $TARGET # If different, backup target and copy source if [ $? -ne 0 ]; then echo &#34;Directories differ, creating backup and syncing&#34; # Create backup of target backup $TARGET /backups/ # Remove target and copy source delete $TARGET --recursive --force copy $SOURCE $TARGET --recursive --preserve echo &#34;Synchronization complete&#34; else echo &#34;Directories are already synchronized&#34; fi Complex Examples# Multi-step Data Processing# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 #!/bin/bash # Process data files with staging WORKSPACE=&#34;/tmp/processing&#34; DATA_DIR=&#34;/data/input&#34; RESULTS_DIR=&#34;/data/output&#34; # Setup workspace create directory $WORKSPACE create directory $WORKSPACE/staging create directory $WORKSPACE/processed create directory $WORKSPACE/failed # Create links to data sources link create $WORKSPACE/input --target $DATA_DIR # Stage files for processing list $DATA_DIR | while read -r file; do if [[ $file == *.csv ]]; then copy &#34;$DATA_DIR/$file&#34; &#34;$WORKSPACE/staging/&#34; fi done echo &#34;Staged files:&#34; list $WORKSPACE/staging # After processing (placeholder for actual processing) # move processed files to results # move failed files to failed directory # Cleanup echo &#34;Processing complete, cleaning up workspace&#34; delete $WORKSPACE --recursive --force Configuration Management# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 #!/bin/bash # Manage application configurations CONFIG_BASE=&#34;/etc/myapp&#34; CONFIG_ENV=&#34;production&#34; # or development, staging, etc. # Create environment-specific config create directory $CONFIG_BASE/environments create directory $CONFIG_BASE/environments/$CONFIG_ENV # Copy base config copy $CONFIG_BASE/base-config.json $CONFIG_BASE/environments/$CONFIG_ENV/config.json # Create link to active config link create $CONFIG_BASE/active-config.json --target $CONFIG_BASE/environments/$CONFIG_ENV/config.json # Backup current configuration backup $CONFIG_BASE/environments/$CONFIG_ENV /backups/configs/ echo &#34;Configuration set to $CONFIG_ENV&#34; info $CONFIG_BASE/active-config.json Tips and Best Practices# Using with Scripts# Always check exit codes: 1 2 3 4 if ! create directory /important/path; then echo &#34;Failed to create directory&#34; exit 1 fi Use the --force flag carefully: 1 2 3 4 5 # Safe: only force when you&#39;re sure delete /tmp/safe-to-delete --force # Be careful with recursive deletes delete /path/to/directory --recursive --force Prefer explicit object types: 1 2 3 4 5 6 # More explicit and clear create directory mydir create file myfile.txt # Less clear what type will be created create myitem Performance Considerations# Use --recursive carefully with large directory trees For large archives, consider using the appropriate compression level When comparing large files, the --deep flag will be slower but more accurate Error Handling# Most commands return non-zero exit codes on failure:">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="website">
+
+
+  <meta itemprop="name" content="Examples">
+  <meta itemprop="description" content="Examples and Common Workflows# This page provides practical examples and common workflows using the Scaphoid filesystem commands.
+Basic File Operations# Creating and Managing Files# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 # Create a new file create file notes.txt # or file create notes.txt # Get information about the file info notes.txt # Copy the file copy notes.txt notes_backup.txt # or file copy notes.txt notes_backup.txt # Rename the file move notes.txt important_notes.txt # or file move notes.txt important_notes.txt Working with Directories# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 # Create a project directory structure create directory project create directory project/src create directory project/tests create directory project/docs # Or using object-first syntax directory create project directory create project/src directory create project/tests directory create project/docs # List the structure list project --recursive # or directory list project --recursive # Copy entire directory copy project project_backup --recursive # or directory copy project project_backup --recursive Advanced Operations# Working with Symbolic Links# 1 2 3 4 5 6 7 8 9 10 11 12 13 # Create a symbolic link to a file create link current_config.json --target /etc/app/config.json # or link create current_config.json --target /etc/app/config.json # Create a link to a directory create link current_data --target /var/lib/app/data # or link create current_data --target /var/lib/app/data # List the link (shows target) info current_config.json list current_data Archive Management# 1 2 3 4 5 6 7 8 9 10 11 12 # Create an archive from a directory create archive project_backup.tar.gz --source project # or archive create project_backup.tar.gz --source project # List archive contents list project_backup.tar.gz # or archive list project_backup.tar.gz # Compare original with extracted version (after extraction) compare project extracted_project Common Workflows# Project Setup Workflow# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 #!/bin/bash # Setup a new Go project structure PROJECT_NAME=&#34;myproject&#34; # Create main directories create directory $PROJECT_NAME create directory $PROJECT_NAME/cmd create directory $PROJECT_NAME/pkg create directory $PROJECT_NAME/internal create directory $PROJECT_NAME/api create directory $PROJECT_NAME/web create directory $PROJECT_NAME/scripts create directory $PROJECT_NAME/deployments create directory $PROJECT_NAME/test create directory $PROJECT_NAME/docs # Create initial files create file $PROJECT_NAME/README.md create file $PROJECT_NAME/go.mod create file $PROJECT_NAME/Makefile create file $PROJECT_NAME/.gitignore # Create symbolic link to current project link create current_project --target $PROJECT_NAME echo &#34;Project structure created!&#34; list $PROJECT_NAME --recursive Backup and Archive Workflow# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 #!/bin/bash # Complete backup workflow SOURCE_DIR=&#34;/important/data&#34; BACKUP_DIR=&#34;/backups&#34; DATE=$(date &#43;%Y%m%d) # Create backup directory for today create directory $BACKUP_DIR/$DATE # Create full backup archive create archive $BACKUP_DIR/$DATE/full_backup.tar.gz --source $SOURCE_DIR # Create individual file backups for critical files backup $SOURCE_DIR/config.json $BACKUP_DIR/$DATE/ backup $SOURCE_DIR/database.sqlite $BACKUP_DIR/$DATE/ # Verify backup integrity info $BACKUP_DIR/$DATE/full_backup.tar.gz list $BACKUP_DIR/$DATE/full_backup.tar.gz echo &#34;Backup completed for $DATE&#34; list $BACKUP_DIR/$DATE --long File Organization Workflow# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 #!/bin/bash # Organize downloads folder DOWNLOADS=&#34;/Users/$(whoami)/Downloads&#34; ORGANIZED=&#34;/Users/$(whoami)/Documents/Organized&#34; # Create organized structure create directory $ORGANIZED create directory $ORGANIZED/images create directory $ORGANIZED/documents create directory $ORGANIZED/archives create directory $ORGANIZED/others # Move files by type (simplified example) # In real usage, you&#39;d want more sophisticated file type detection # Get list of files list $DOWNLOADS &gt; /tmp/downloads_list.txt # Example of moving specific file types # Note: This is a simplified example - real implementation would need # proper file type detection and error handling echo &#34;Organizing files in $DOWNLOADS&#34; echo &#34;Created organized structure in $ORGANIZED&#34; list $ORGANIZED --recursive Synchronization Workflow# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 #!/bin/bash # Synchronize two directories SOURCE=&#34;/source/directory&#34; TARGET=&#34;/target/directory&#34; echo &#34;Synchronizing $SOURCE to $TARGET&#34; # Compare directories first compare $SOURCE $TARGET # If different, backup target and copy source if [ $? -ne 0 ]; then echo &#34;Directories differ, creating backup and syncing&#34; # Create backup of target backup $TARGET /backups/ # Remove target and copy source delete $TARGET --recursive --force copy $SOURCE $TARGET --recursive --preserve echo &#34;Synchronization complete&#34; else echo &#34;Directories are already synchronized&#34; fi Complex Examples# Multi-step Data Processing# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 #!/bin/bash # Process data files with staging WORKSPACE=&#34;/tmp/processing&#34; DATA_DIR=&#34;/data/input&#34; RESULTS_DIR=&#34;/data/output&#34; # Setup workspace create directory $WORKSPACE create directory $WORKSPACE/staging create directory $WORKSPACE/processed create directory $WORKSPACE/failed # Create links to data sources link create $WORKSPACE/input --target $DATA_DIR # Stage files for processing list $DATA_DIR | while read -r file; do if [[ $file == *.csv ]]; then copy &#34;$DATA_DIR/$file&#34; &#34;$WORKSPACE/staging/&#34; fi done echo &#34;Staged files:&#34; list $WORKSPACE/staging # After processing (placeholder for actual processing) # move processed files to results # move failed files to failed directory # Cleanup echo &#34;Processing complete, cleaning up workspace&#34; delete $WORKSPACE --recursive --force Configuration Management# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 #!/bin/bash # Manage application configurations CONFIG_BASE=&#34;/etc/myapp&#34; CONFIG_ENV=&#34;production&#34; # or development, staging, etc. # Create environment-specific config create directory $CONFIG_BASE/environments create directory $CONFIG_BASE/environments/$CONFIG_ENV # Copy base config copy $CONFIG_BASE/base-config.json $CONFIG_BASE/environments/$CONFIG_ENV/config.json # Create link to active config link create $CONFIG_BASE/active-config.json --target $CONFIG_BASE/environments/$CONFIG_ENV/config.json # Backup current configuration backup $CONFIG_BASE/environments/$CONFIG_ENV /backups/configs/ echo &#34;Configuration set to $CONFIG_ENV&#34; info $CONFIG_BASE/active-config.json Tips and Best Practices# Using with Scripts# Always check exit codes: 1 2 3 4 if ! create directory /important/path; then echo &#34;Failed to create directory&#34; exit 1 fi Use the --force flag carefully: 1 2 3 4 5 # Safe: only force when you&#39;re sure delete /tmp/safe-to-delete --force # Be careful with recursive deletes delete /path/to/directory --recursive --force Prefer explicit object types: 1 2 3 4 5 6 # More explicit and clear create directory mydir create file myfile.txt # Less clear what type will be created create myitem Performance Considerations# Use --recursive carefully with large directory trees For large archives, consider using the appropriate compression level When comparing large files, the --deep flag will be slower but more accurate Error Handling# Most commands return non-zero exit codes on failure:">
+  <meta itemprop="datePublished" content="2025-11-23T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-11-23T00:00:00+00:00">
+  <meta itemprop="wordCount" content="1086">
+
+<title>Examples | Scaphoid Filesystem Toolkit</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1314/examples/">
+<link rel="stylesheet" href="/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css" integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj&#43;RQ9XBXU=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.a2e58b0dc7e01ec107ba5bb75489e2ade594e0340b62303438719909860c49e4.js" integrity="sha256-ouWLDcfgHsEHulu3VInireWU4DQLYjA0OHGZCYYMSeQ=" crossorigin="anonymous"></script>
+
+
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1314/examples/index.xml" title="Scaphoid Filesystem Toolkit" />
+
+  
+</head>
+<body dir="ltr" class="book-kind-section book-type-examples">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Scaphoid Filesystem Toolkit</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/commands/" class="">
+      Command Reference</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/examples/" class="active">
+      Examples</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/getting-started/" class="">
+      Getting Started</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="https://github.com/42sol-eu/hands_scaphoid_go" target="_blank" rel="noopener">Project on GitHub</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Examples</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#examples-and-common-workflows">Examples and Common Workflows</a>
+      <ul>
+        <li><a href="#basic-file-operations">Basic File Operations</a>
+          <ul>
+            <li><a href="#creating-and-managing-files">Creating and Managing Files</a></li>
+            <li><a href="#working-with-directories">Working with Directories</a></li>
+          </ul>
+        </li>
+        <li><a href="#advanced-operations">Advanced Operations</a>
+          <ul>
+            <li><a href="#working-with-symbolic-links">Working with Symbolic Links</a></li>
+            <li><a href="#archive-management">Archive Management</a></li>
+          </ul>
+        </li>
+        <li><a href="#common-workflows">Common Workflows</a>
+          <ul>
+            <li><a href="#project-setup-workflow">Project Setup Workflow</a></li>
+            <li><a href="#backup-and-archive-workflow">Backup and Archive Workflow</a></li>
+            <li><a href="#file-organization-workflow">File Organization Workflow</a></li>
+            <li><a href="#synchronization-workflow">Synchronization Workflow</a></li>
+          </ul>
+        </li>
+        <li><a href="#complex-examples">Complex Examples</a>
+          <ul>
+            <li><a href="#multi-step-data-processing">Multi-step Data Processing</a></li>
+            <li><a href="#configuration-management">Configuration Management</a></li>
+          </ul>
+        </li>
+        <li><a href="#tips-and-best-practices">Tips and Best Practices</a>
+          <ul>
+            <li><a href="#using-with-scripts">Using with Scripts</a></li>
+            <li><a href="#performance-considerations">Performance Considerations</a></li>
+            <li><a href="#error-handling">Error Handling</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="examples-and-common-workflows">Examples and Common Workflows<a class="anchor" href="#examples-and-common-workflows">#</a></h1>
+<p>This page provides practical examples and common workflows using the Scaphoid filesystem commands.</p>
+<h2 id="basic-file-operations">Basic File Operations<a class="anchor" href="#basic-file-operations">#</a></h2>
+<h3 id="creating-and-managing-files">Creating and Managing Files<a class="anchor" href="#creating-and-managing-files">#</a></h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># Create a new file</span>
+</span></span><span style="display:flex;"><span>create file notes.txt
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># or</span>
+</span></span><span style="display:flex;"><span>file create notes.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Get information about the file</span>
+</span></span><span style="display:flex;"><span>info notes.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Copy the file</span>
+</span></span><span style="display:flex;"><span>copy notes.txt notes_backup.txt
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># or</span>
+</span></span><span style="display:flex;"><span>file copy notes.txt notes_backup.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Rename the file</span>
+</span></span><span style="display:flex;"><span>move notes.txt important_notes.txt
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># or</span>
+</span></span><span style="display:flex;"><span>file move notes.txt important_notes.txt</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="working-with-directories">Working with Directories<a class="anchor" href="#working-with-directories">#</a></h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># Create a project directory structure</span>
+</span></span><span style="display:flex;"><span>create directory project
+</span></span><span style="display:flex;"><span>create directory project/src
+</span></span><span style="display:flex;"><span>create directory project/tests
+</span></span><span style="display:flex;"><span>create directory project/docs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Or using object-first syntax</span>
+</span></span><span style="display:flex;"><span>directory create project
+</span></span><span style="display:flex;"><span>directory create project/src
+</span></span><span style="display:flex;"><span>directory create project/tests
+</span></span><span style="display:flex;"><span>directory create project/docs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># List the structure</span>
+</span></span><span style="display:flex;"><span>list project --recursive
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># or</span>
+</span></span><span style="display:flex;"><span>directory list project --recursive
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Copy entire directory</span>
+</span></span><span style="display:flex;"><span>copy project project_backup --recursive
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># or</span>
+</span></span><span style="display:flex;"><span>directory copy project project_backup --recursive</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="advanced-operations">Advanced Operations<a class="anchor" href="#advanced-operations">#</a></h2>
+<h3 id="working-with-symbolic-links">Working with Symbolic Links<a class="anchor" href="#working-with-symbolic-links">#</a></h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># Create a symbolic link to a file</span>
+</span></span><span style="display:flex;"><span>create link current_config.json --target /etc/app/config.json
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># or</span>
+</span></span><span style="display:flex;"><span>link create current_config.json --target /etc/app/config.json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Create a link to a directory</span>
+</span></span><span style="display:flex;"><span>create link current_data --target /var/lib/app/data
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># or</span>
+</span></span><span style="display:flex;"><span>link create current_data --target /var/lib/app/data
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># List the link (shows target)</span>
+</span></span><span style="display:flex;"><span>info current_config.json
+</span></span><span style="display:flex;"><span>list current_data</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="archive-management">Archive Management<a class="anchor" href="#archive-management">#</a></h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># Create an archive from a directory</span>
+</span></span><span style="display:flex;"><span>create archive project_backup.tar.gz --source project
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># or</span>
+</span></span><span style="display:flex;"><span>archive create project_backup.tar.gz --source project
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># List archive contents</span>
+</span></span><span style="display:flex;"><span>list project_backup.tar.gz
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># or</span>
+</span></span><span style="display:flex;"><span>archive list project_backup.tar.gz
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Compare original with extracted version (after extraction)</span>
+</span></span><span style="display:flex;"><span>compare project extracted_project</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="common-workflows">Common Workflows<a class="anchor" href="#common-workflows">#</a></h2>
+<h3 id="project-setup-workflow">Project Setup Workflow<a class="anchor" href="#project-setup-workflow">#</a></h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"></span><span style="color:#57606a"># Setup a new Go project structure</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#953800">PROJECT_NAME</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;myproject&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Create main directories</span>
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$PROJECT_NAME</span>
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$PROJECT_NAME</span>/cmd
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$PROJECT_NAME</span>/pkg
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$PROJECT_NAME</span>/internal
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$PROJECT_NAME</span>/api
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$PROJECT_NAME</span>/web
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$PROJECT_NAME</span>/scripts
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$PROJECT_NAME</span>/deployments
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$PROJECT_NAME</span>/test
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$PROJECT_NAME</span>/docs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Create initial files</span>
+</span></span><span style="display:flex;"><span>create file <span style="color:#953800">$PROJECT_NAME</span>/README.md
+</span></span><span style="display:flex;"><span>create file <span style="color:#953800">$PROJECT_NAME</span>/go.mod
+</span></span><span style="display:flex;"><span>create file <span style="color:#953800">$PROJECT_NAME</span>/Makefile
+</span></span><span style="display:flex;"><span>create file <span style="color:#953800">$PROJECT_NAME</span>/.gitignore
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Create symbolic link to current project</span>
+</span></span><span style="display:flex;"><span>link create current_project --target <span style="color:#953800">$PROJECT_NAME</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;Project structure created!&#34;</span>
+</span></span><span style="display:flex;"><span>list <span style="color:#953800">$PROJECT_NAME</span> --recursive</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="backup-and-archive-workflow">Backup and Archive Workflow<a class="anchor" href="#backup-and-archive-workflow">#</a></h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"></span><span style="color:#57606a"># Complete backup workflow</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#953800">SOURCE_DIR</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;/important/data&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#953800">BACKUP_DIR</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;/backups&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#953800">DATE</span><span style="color:#0550ae">=</span><span style="color:#cf222e">$(</span>date +%Y%m%d<span style="color:#cf222e">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Create backup directory for today</span>
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$BACKUP_DIR</span>/<span style="color:#953800">$DATE</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Create full backup archive</span>
+</span></span><span style="display:flex;"><span>create archive <span style="color:#953800">$BACKUP_DIR</span>/<span style="color:#953800">$DATE</span>/full_backup.tar.gz --source <span style="color:#953800">$SOURCE_DIR</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Create individual file backups for critical files</span>
+</span></span><span style="display:flex;"><span>backup <span style="color:#953800">$SOURCE_DIR</span>/config.json <span style="color:#953800">$BACKUP_DIR</span>/<span style="color:#953800">$DATE</span>/
+</span></span><span style="display:flex;"><span>backup <span style="color:#953800">$SOURCE_DIR</span>/database.sqlite <span style="color:#953800">$BACKUP_DIR</span>/<span style="color:#953800">$DATE</span>/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Verify backup integrity</span>
+</span></span><span style="display:flex;"><span>info <span style="color:#953800">$BACKUP_DIR</span>/<span style="color:#953800">$DATE</span>/full_backup.tar.gz
+</span></span><span style="display:flex;"><span>list <span style="color:#953800">$BACKUP_DIR</span>/<span style="color:#953800">$DATE</span>/full_backup.tar.gz
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;Backup completed for </span><span style="color:#953800">$DATE</span><span style="color:#0a3069">&#34;</span>
+</span></span><span style="display:flex;"><span>list <span style="color:#953800">$BACKUP_DIR</span>/<span style="color:#953800">$DATE</span> --long</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="file-organization-workflow">File Organization Workflow<a class="anchor" href="#file-organization-workflow">#</a></h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"></span><span style="color:#57606a"># Organize downloads folder</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#953800">DOWNLOADS</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;/Users/</span><span style="color:#cf222e">$(</span>whoami<span style="color:#cf222e">)</span><span style="color:#0a3069">/Downloads&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#953800">ORGANIZED</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;/Users/</span><span style="color:#cf222e">$(</span>whoami<span style="color:#cf222e">)</span><span style="color:#0a3069">/Documents/Organized&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Create organized structure</span>
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$ORGANIZED</span>
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$ORGANIZED</span>/images
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$ORGANIZED</span>/documents  
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$ORGANIZED</span>/archives
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$ORGANIZED</span>/others
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Move files by type (simplified example)</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># In real usage, you&#39;d want more sophisticated file type detection</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Get list of files</span>
+</span></span><span style="display:flex;"><span>list <span style="color:#953800">$DOWNLOADS</span> &gt; /tmp/downloads_list.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Example of moving specific file types</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Note: This is a simplified example - real implementation would need</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># proper file type detection and error handling</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;Organizing files in </span><span style="color:#953800">$DOWNLOADS</span><span style="color:#0a3069">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;Created organized structure in </span><span style="color:#953800">$ORGANIZED</span><span style="color:#0a3069">&#34;</span>
+</span></span><span style="display:flex;"><span>list <span style="color:#953800">$ORGANIZED</span> --recursive</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="synchronization-workflow">Synchronization Workflow<a class="anchor" href="#synchronization-workflow">#</a></h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"></span><span style="color:#57606a"># Synchronize two directories</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#953800">SOURCE</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;/source/directory&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#953800">TARGET</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;/target/directory&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;Synchronizing </span><span style="color:#953800">$SOURCE</span><span style="color:#0a3069"> to </span><span style="color:#953800">$TARGET</span><span style="color:#0a3069">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Compare directories first</span>
+</span></span><span style="display:flex;"><span>compare <span style="color:#953800">$SOURCE</span> <span style="color:#953800">$TARGET</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># If different, backup target and copy source</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">if</span> <span style="color:#0550ae">[</span> <span style="color:#953800">$?</span> -ne <span style="color:#0550ae">0</span> <span style="color:#0550ae">]</span><span style="color:#1f2328">;</span> <span style="color:#cf222e">then</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;Directories differ, creating backup and syncing&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># Create backup of target</span>
+</span></span><span style="display:flex;"><span>    backup <span style="color:#953800">$TARGET</span> /backups/
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#57606a"># Remove target and copy source</span>
+</span></span><span style="display:flex;"><span>    delete <span style="color:#953800">$TARGET</span> --recursive --force
+</span></span><span style="display:flex;"><span>    copy <span style="color:#953800">$SOURCE</span> <span style="color:#953800">$TARGET</span> --recursive --preserve
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;Synchronization complete&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">else</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;Directories are already synchronized&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">fi</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="complex-examples">Complex Examples<a class="anchor" href="#complex-examples">#</a></h2>
+<h3 id="multi-step-data-processing">Multi-step Data Processing<a class="anchor" href="#multi-step-data-processing">#</a></h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"></span><span style="color:#57606a"># Process data files with staging</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#953800">WORKSPACE</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;/tmp/processing&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#953800">DATA_DIR</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;/data/input&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#953800">RESULTS_DIR</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;/data/output&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Setup workspace</span>
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$WORKSPACE</span>
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$WORKSPACE</span>/staging
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$WORKSPACE</span>/processed
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$WORKSPACE</span>/failed
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Create links to data sources</span>
+</span></span><span style="display:flex;"><span>link create <span style="color:#953800">$WORKSPACE</span>/input --target <span style="color:#953800">$DATA_DIR</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Stage files for processing</span>
+</span></span><span style="display:flex;"><span>list <span style="color:#953800">$DATA_DIR</span> <span style="color:#1f2328">|</span> <span style="color:#cf222e">while</span> <span style="color:#6639ba">read</span> -r file<span style="color:#1f2328">;</span> <span style="color:#cf222e">do</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">if</span> <span style="color:#0550ae">[[</span> <span style="color:#953800">$file</span> <span style="color:#0550ae">==</span> *.csv <span style="color:#0550ae">]]</span><span style="color:#1f2328">;</span> <span style="color:#cf222e">then</span>
+</span></span><span style="display:flex;"><span>        copy <span style="color:#0a3069">&#34;</span><span style="color:#953800">$DATA_DIR</span><span style="color:#0a3069">/</span><span style="color:#953800">$file</span><span style="color:#0a3069">&#34;</span> <span style="color:#0a3069">&#34;</span><span style="color:#953800">$WORKSPACE</span><span style="color:#0a3069">/staging/&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#cf222e">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">done</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;Staged files:&#34;</span>
+</span></span><span style="display:flex;"><span>list <span style="color:#953800">$WORKSPACE</span>/staging
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># After processing (placeholder for actual processing)</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># move processed files to results</span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># move failed files to failed directory</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Cleanup</span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;Processing complete, cleaning up workspace&#34;</span>
+</span></span><span style="display:flex;"><span>delete <span style="color:#953800">$WORKSPACE</span> --recursive --force</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="configuration-management">Configuration Management<a class="anchor" href="#configuration-management">#</a></h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#57606a"></span><span style="color:#57606a"># Manage application configurations</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#953800">CONFIG_BASE</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;/etc/myapp&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#953800">CONFIG_ENV</span><span style="color:#0550ae">=</span><span style="color:#0a3069">&#34;production&#34;</span>  <span style="color:#57606a"># or development, staging, etc.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Create environment-specific config</span>
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$CONFIG_BASE</span>/environments
+</span></span><span style="display:flex;"><span>create directory <span style="color:#953800">$CONFIG_BASE</span>/environments/<span style="color:#953800">$CONFIG_ENV</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Copy base config</span>
+</span></span><span style="display:flex;"><span>copy <span style="color:#953800">$CONFIG_BASE</span>/base-config.json <span style="color:#953800">$CONFIG_BASE</span>/environments/<span style="color:#953800">$CONFIG_ENV</span>/config.json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Create link to active config</span>
+</span></span><span style="display:flex;"><span>link create <span style="color:#953800">$CONFIG_BASE</span>/active-config.json --target <span style="color:#953800">$CONFIG_BASE</span>/environments/<span style="color:#953800">$CONFIG_ENV</span>/config.json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Backup current configuration</span>
+</span></span><span style="display:flex;"><span>backup <span style="color:#953800">$CONFIG_BASE</span>/environments/<span style="color:#953800">$CONFIG_ENV</span> /backups/configs/
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;Configuration set to </span><span style="color:#953800">$CONFIG_ENV</span><span style="color:#0a3069">&#34;</span>
+</span></span><span style="display:flex;"><span>info <span style="color:#953800">$CONFIG_BASE</span>/active-config.json</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="tips-and-best-practices">Tips and Best Practices<a class="anchor" href="#tips-and-best-practices">#</a></h2>
+<h3 id="using-with-scripts">Using with Scripts<a class="anchor" href="#using-with-scripts">#</a></h3>
+<ol>
+<li><strong>Always check exit codes:</strong></li>
+</ol>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#cf222e">if</span> ! create directory /important/path<span style="color:#1f2328">;</span> <span style="color:#cf222e">then</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;Failed to create directory&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6639ba">exit</span> <span style="color:#0550ae">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">fi</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li><strong>Use the <code>--force</code> flag carefully:</strong></li>
+</ol>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># Safe: only force when you&#39;re sure</span>
+</span></span><span style="display:flex;"><span>delete /tmp/safe-to-delete --force
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Be careful with recursive deletes</span>
+</span></span><span style="display:flex;"><span>delete /path/to/directory --recursive --force</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li><strong>Prefer explicit object types:</strong></li>
+</ol>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># More explicit and clear</span>
+</span></span><span style="display:flex;"><span>create directory mydir
+</span></span><span style="display:flex;"><span>create file myfile.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Less clear what type will be created</span>
+</span></span><span style="display:flex;"><span>create myitem</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="performance-considerations">Performance Considerations<a class="anchor" href="#performance-considerations">#</a></h3>
+<ul>
+<li>Use <code>--recursive</code> carefully with large directory trees</li>
+<li>For large archives, consider using the appropriate compression level</li>
+<li>When comparing large files, the <code>--deep</code> flag will be slower but more accurate</li>
+</ul>
+<h3 id="error-handling">Error Handling<a class="anchor" href="#error-handling">#</a></h3>
+<p>Most commands return non-zero exit codes on failure:</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#cf222e">if</span> copy large-file.dat backup/<span style="color:#1f2328">;</span> <span style="color:#cf222e">then</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;Backup successful&#34;</span>
+</span></span><span style="display:flex;"><span>    delete large-file.dat
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">else</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6639ba">echo</span> <span style="color:#0a3069">&#34;Backup failed, keeping original&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">fi</span></span></span></code></pre></td></tr></table>
+</div>
+</div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+  
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/commands/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Command Reference</span>
+      </a>
+    
+    </span>
+    <span>
+    
+      <a href="/getting-started/" class="flex align-center">
+        <span>Getting Started</span>
+        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
+      </a>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#examples-and-common-workflows">Examples and Common Workflows</a>
+      <ul>
+        <li><a href="#basic-file-operations">Basic File Operations</a>
+          <ul>
+            <li><a href="#creating-and-managing-files">Creating and Managing Files</a></li>
+            <li><a href="#working-with-directories">Working with Directories</a></li>
+          </ul>
+        </li>
+        <li><a href="#advanced-operations">Advanced Operations</a>
+          <ul>
+            <li><a href="#working-with-symbolic-links">Working with Symbolic Links</a></li>
+            <li><a href="#archive-management">Archive Management</a></li>
+          </ul>
+        </li>
+        <li><a href="#common-workflows">Common Workflows</a>
+          <ul>
+            <li><a href="#project-setup-workflow">Project Setup Workflow</a></li>
+            <li><a href="#backup-and-archive-workflow">Backup and Archive Workflow</a></li>
+            <li><a href="#file-organization-workflow">File Organization Workflow</a></li>
+            <li><a href="#synchronization-workflow">Synchronization Workflow</a></li>
+          </ul>
+        </li>
+        <li><a href="#complex-examples">Complex Examples</a>
+          <ul>
+            <li><a href="#multi-step-data-processing">Multi-step Data Processing</a></li>
+            <li><a href="#configuration-management">Configuration Management</a></li>
+          </ul>
+        </li>
+        <li><a href="#tips-and-best-practices">Tips and Best Practices</a>
+          <ul>
+            <li><a href="#using-with-scripts">Using with Scripts</a></li>
+            <li><a href="#performance-considerations">Performance Considerations</a></li>
+            <li><a href="#error-handling">Error Handling</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

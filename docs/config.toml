@@ -1,0 +1,24 @@
+baseURL = "http://localhost:1313"
+languageCode = "en-us"
+title = "Scaphoid Filesystem Toolkit"
+theme = "explore"
+
+[params]
+BookRepo = "https://github.com/42sol-eu/hands_scaphoid_go"
+BookEditPage = true
+BookSearch = true
+BookSection = "*"
+
+[[menu.after]]
+name = "Project on GitHub"
+url = "https://github.com/42sol-eu/hands_scaphoid_go"
+weight = 10
+
+[markup]
+[markup.goldmark.renderer]
+unsafe = true
+[markup.tableOfContents]
+startLevel = 1
+[markup.highlight]
+style = "github"
+lineNos = true

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head>
+	<meta name="generator" content="Hugo 0.149.1"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1314&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A comprehensive toolkit for filesystem operations with dual command syntax support">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1314/">
+  <meta property="og:site_name" content="Scaphoid Filesystem Toolkit">
+  <meta property="og:title" content="Scaphoid Filesystem Commands">
+  <meta property="og:description" content="A comprehensive toolkit for filesystem operations with dual command syntax support">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="website">
+
+
+  <meta itemprop="name" content="Scaphoid Filesystem Commands">
+  <meta itemprop="description" content="A comprehensive toolkit for filesystem operations with dual command syntax support">
+  <meta itemprop="datePublished" content="2025-11-23T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-11-23T00:00:00+00:00">
+  <meta itemprop="wordCount" content="254">
+
+<title>Scaphoid Filesystem Commands | Scaphoid Filesystem Toolkit</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1314/">
+<link rel="stylesheet" href="/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css" integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj&#43;RQ9XBXU=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.a2e58b0dc7e01ec107ba5bb75489e2ade594e0340b62303438719909860c49e4.js" integrity="sha256-ouWLDcfgHsEHulu3VInireWU4DQLYjA0OHGZCYYMSeQ=" crossorigin="anonymous"></script>
+
+
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1314/index.xml" title="Scaphoid Filesystem Toolkit" />
+
+  
+</head>
+<body dir="ltr" class="book-kind-home book-type-page">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Scaphoid Filesystem Toolkit</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/commands/" class="">
+      Command Reference</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/examples/" class="">
+      Examples</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/getting-started/" class="">
+      Getting Started</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="https://github.com/42sol-eu/hands_scaphoid_go" target="_blank" rel="noopener">Project on GitHub</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Scaphoid Filesystem Commands</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#scaphoid-filesystem-commands">Scaphoid Filesystem Commands</a>
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#quick-start">Quick Start</a></li>
+        <li><a href="#command-overview">Command Overview</a>
+          <ul>
+            <li><a href="#action-based-commands">Action-Based Commands</a></li>
+            <li><a href="#object-based-commands">Object-Based Commands</a></li>
+          </ul>
+        </li>
+        <li><a href="#examples">Examples</a></li>
+        <li><a href="#documentation-sections">Documentation Sections</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="scaphoid-filesystem-commands">Scaphoid Filesystem Commands<a class="anchor" href="#scaphoid-filesystem-commands">#</a></h1>
+<p>A powerful and flexible toolkit for filesystem operations built with Go. This project provides a comprehensive set of command-line utilities for managing files, directories, links, and archives with support for both action-first and object-first command syntax.</p>
+<h2 id="features">Features<a class="anchor" href="#features">#</a></h2>
+<ul>
+<li><strong>Dual Command Syntax</strong>: Use either <code>create directory mydir</code> or <code>directory create mydir</code></li>
+<li><strong>Comprehensive Operations</strong>: Create, list, copy, move, delete, info, compare, and backup</li>
+<li><strong>Multiple Object Types</strong>: Files, directories, symbolic links, and archives</li>
+<li><strong>Unix Philosophy</strong>: Simple tools that work well together</li>
+<li><strong>Cross-Platform</strong>: Built with Go for portability</li>
+<li><strong>Extensive Testing</strong>: Unit and integration tests included</li>
+</ul>
+<h2 id="quick-start">Quick Start<a class="anchor" href="#quick-start">#</a></h2>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># Clone the repository</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/42sol-eu/hands_scaphoid_go.git
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">cd</span> hands_scaphoid_go
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Build all commands</span>
+</span></span><span style="display:flex;"><span>task build
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Run demo</span>
+</span></span><span style="display:flex;"><span>task run:demo
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Install globally</span>
+</span></span><span style="display:flex;"><span>task install</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="command-overview">Command Overview<a class="anchor" href="#command-overview">#</a></h2>
+<h3 id="action-based-commands">Action-Based Commands<a class="anchor" href="#action-based-commands">#</a></h3>
+<ul>
+<li><code>create</code> - Create filesystem objects</li>
+<li><code>list</code> - List contents of objects</li>
+<li><code>copy</code> - Copy objects</li>
+<li><code>move</code> - Move/rename objects</li>
+<li><code>delete</code> - Delete objects</li>
+<li><code>info</code> - Get object information</li>
+<li><code>compare</code> - Compare objects</li>
+<li><code>backup</code> - Backup objects</li>
+</ul>
+<h3 id="object-based-commands">Object-Based Commands<a class="anchor" href="#object-based-commands">#</a></h3>
+<ul>
+<li><code>directory</code> - Directory operations</li>
+<li><code>file</code> - File operations</li>
+<li><code>link</code> - Symbolic link operations</li>
+<li><code>archive</code> - Archive operations</li>
+</ul>
+<h2 id="examples">Examples<a class="anchor" href="#examples">#</a></h2>
+<p>Create a directory:</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># Action-first syntax</span>
+</span></span><span style="display:flex;"><span>create directory /path/to/mydir
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Object-first syntax</span>
+</span></span><span style="display:flex;"><span>directory create /path/to/mydir</span></span></code></pre></td></tr></table>
+</div>
+</div><p>List directory contents:</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># Action-first syntax</span>
+</span></span><span style="display:flex;"><span>list /path/to/directory
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Object-first syntax</span>
+</span></span><span style="display:flex;"><span>directory list /path/to/directory</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="documentation-sections">Documentation Sections<a class="anchor" href="#documentation-sections">#</a></h2>
+<ul>
+<li><a href="/getting-started/">Getting Started Guide</a> - Installation and basic usage</li>
+<li><a href="/commands/">Command Reference</a> - Detailed command documentation</li>
+<li><a href="/examples/">Examples</a> - Common use cases and workflows</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+  
+
+
+
+  
+  
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#scaphoid-filesystem-commands">Scaphoid Filesystem Commands</a>
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#quick-start">Quick Start</a></li>
+        <li><a href="#command-overview">Command Overview</a>
+          <ul>
+            <li><a href="#action-based-commands">Action-Based Commands</a></li>
+            <li><a href="#object-based-commands">Object-Based Commands</a></li>
+          </ul>
+        </li>
+        <li><a href="#examples">Examples</a></li>
+        <li><a href="#documentation-sections">Documentation Sections</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

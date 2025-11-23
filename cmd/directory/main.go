@@ -1,0 +1,265 @@
+package main
+
+import (
+	"fmt"
+	"os"
+
+	"github.com/42sol-eu/hands_scaphoid_go/pkg/actions"
+	"github.com/42sol-eu/hands_scaphoid_go/pkg/fsobj"
+	"github.com/spf13/cobra"
+)
+
+var (
+	force      bool
+	recursive  bool
+	showHidden bool
+	longFormat bool
+	showAll    bool
+	deep       bool
+	timestamp  bool
+	compress   bool
+)
+
+// validateDirectoryPath checks if the given path is actually a directory
+func validateDirectoryPath(path string) error {
+	obj, err := fsobj.NewFSObject(path)
+	if err != nil {
+		return err
+	}
+
+	if obj.Exists() && obj.Type() != fsobj.TypeDirectory {
+		return fmt.Errorf("path '%s' exists but is not a directory (it's a %s)", path, obj.Type())
+	}
+
+	return nil
+}
+
+var rootCmd = &cobra.Command{
+	Use:   "directory",
+	Short: "Directory operations",
+	Long:  `Perform various operations on directories.`,
+}
+
+var createCmd = &cobra.Command{
+	Use:   "create [path]",
+	Short: "Create a directory",
+	Args:  cobra.ExactArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		action := &actions.CreateAction{
+			Force:     force,
+			Recursive: recursive,
+		}
+
+		result := action.Execute(fsobj.TypeDirectory, args[0], nil)
+		if result.Success {
+			fmt.Println(result.Message)
+		} else {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", result.Error)
+			os.Exit(1)
+		}
+	},
+}
+
+var listCmd = &cobra.Command{
+	Use:   "list [path]",
+	Short: "List directory contents",
+	Args:  cobra.ExactArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		if err := validateDirectoryPath(args[0]); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+
+		action := &actions.ListAction{
+			ShowHidden: showHidden,
+			LongFormat: longFormat,
+			Recursive:  recursive,
+		}
+
+		result := action.Execute(args[0])
+		if result.Success {
+			if output, ok := result.Data.([]string); ok {
+				for _, line := range output {
+					fmt.Println(line)
+				}
+			}
+		} else {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", result.Error)
+			os.Exit(1)
+		}
+	},
+}
+
+var copyCmd = &cobra.Command{
+	Use:   "copy [source] [destination]",
+	Short: "Copy a directory",
+	Args:  cobra.ExactArgs(2),
+	Run: func(cmd *cobra.Command, args []string) {
+		action := &actions.CopyAction{
+			Recursive: recursive,
+			Force:     force,
+		}
+
+		result := action.Execute(args[0], args[1])
+		if result.Success {
+			fmt.Println(result.Message)
+		} else {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", result.Error)
+			os.Exit(1)
+		}
+	},
+}
+
+var moveCmd = &cobra.Command{
+	Use:   "move [source] [destination]",
+	Short: "Move a directory",
+	Args:  cobra.ExactArgs(2),
+	Run: func(cmd *cobra.Command, args []string) {
+		action := &actions.MoveAction{
+			Force: force,
+		}
+
+		result := action.Execute(args[0], args[1])
+		if result.Success {
+			fmt.Println(result.Message)
+		} else {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", result.Error)
+			os.Exit(1)
+		}
+	},
+}
+
+var deleteCmd = &cobra.Command{
+	Use:   "delete [path]",
+	Short: "Delete a directory",
+	Args:  cobra.ExactArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		action := &actions.DeleteAction{
+			Force:     force,
+			Recursive: recursive,
+		}
+
+		result := action.Execute(args[0])
+		if result.Success {
+			fmt.Println(result.Message)
+		} else {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", result.Error)
+			os.Exit(1)
+		}
+	},
+}
+
+var infoCmd = &cobra.Command{
+	Use:   "info [path]",
+	Short: "Get directory information",
+	Args:  cobra.ExactArgs(1),
+	Run: func(cmd *cobra.Command, args []string) {
+		if err := validateDirectoryPath(args[0]); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+
+		action := &actions.InfoAction{
+			ShowAll: showAll,
+		}
+
+		result := action.Execute(args[0])
+		if result.Success {
+			if info, ok := result.Data.(map[string]interface{}); ok {
+				for key, value := range info {
+					fmt.Printf("%s: %v\n", key, value)
+				}
+			}
+		} else {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", result.Error)
+			os.Exit(1)
+		}
+	},
+}
+
+var compareCmd = &cobra.Command{
+	Use:   "compare [path1] [path2]",
+	Short: "Compare two directories",
+	Args:  cobra.ExactArgs(2),
+	Run: func(cmd *cobra.Command, args []string) {
+		if err := validateDirectoryPath(args[0]); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+		if err := validateDirectoryPath(args[1]); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+
+		action := &actions.CompareAction{
+			Deep: deep,
+		}
+
+		result := action.Execute(args[0], args[1])
+		if result.Success {
+			fmt.Println(result.Message)
+			if comparison, ok := result.Data.(map[string]interface{}); ok {
+				for key, value := range comparison {
+					fmt.Printf("%s: %v\n", key, value)
+				}
+			}
+		} else {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", result.Error)
+			os.Exit(1)
+		}
+	},
+}
+
+var backupCmd = &cobra.Command{
+	Use:   "backup [source] [backup-directory]",
+	Short: "Backup a directory",
+	Args:  cobra.ExactArgs(2),
+	Run: func(cmd *cobra.Command, args []string) {
+		if err := validateDirectoryPath(args[0]); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
+
+		action := &actions.BackupAction{
+			Timestamp: timestamp,
+			Compress:  compress,
+		}
+
+		result := action.Execute(args[0], args[1])
+		if result.Success {
+			fmt.Println(result.Message)
+		} else {
+			fmt.Fprintf(os.Stderr, "Error: %v\n", result.Error)
+			os.Exit(1)
+		}
+	},
+}
+
+func init() {
+	rootCmd.PersistentFlags().BoolVarP(&force, "force", "f", false, "Force operation")
+	rootCmd.PersistentFlags().BoolVarP(&recursive, "recursive", "r", false, "Recursive operation")
+
+	listCmd.Flags().BoolVarP(&showHidden, "all", "a", false, "Show hidden files")
+	listCmd.Flags().BoolVarP(&longFormat, "long", "l", false, "Long format")
+
+	infoCmd.Flags().BoolVarP(&showAll, "all", "a", false, "Show all available information")
+	compareCmd.Flags().BoolVarP(&deep, "deep", "d", false, "Perform deep comparison")
+	backupCmd.Flags().BoolVarP(&timestamp, "timestamp", "t", true, "Add timestamp to backup name")
+	backupCmd.Flags().BoolVarP(&compress, "compress", "c", false, "Compress backup")
+
+	rootCmd.AddCommand(createCmd)
+	rootCmd.AddCommand(listCmd)
+	rootCmd.AddCommand(copyCmd)
+	rootCmd.AddCommand(moveCmd)
+	rootCmd.AddCommand(deleteCmd)
+	rootCmd.AddCommand(infoCmd)
+	rootCmd.AddCommand(compareCmd)
+	rootCmd.AddCommand(backupCmd)
+}
+
+func main() {
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		os.Exit(1)
+	}
+}

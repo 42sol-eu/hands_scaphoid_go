@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1314&amp;path=livereload" data-no-instant defer></script>
+  <!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Getting Started with Scaphoid Filesystem Commands# This guide will help you install, build, and start using the Scaphoid filesystem commands toolkit.
+Prerequisites# Go 1.19 or later Git Task runner (optional but recommended) Installing Task Runner# If you don’t have Task installed, you can install it using:
+macOS (Homebrew):
+1 brew install go-task/tap/go-task Other platforms:
+1 go install github.com/go-task/task/v3/cmd/task@latest Installation# Option 1: Clone and Build# 1 2 3 4 5 6 7 8 9 10 # Clone the repository git clone https://github.com/42sol-eu/hands_scaphoid_go.git cd hands_scaphoid_go # Install dependencies and build task deps task build # Optionally install to system PATH task install Option 2: Go Install (coming soon)# 1 go install github.com/42sol-eu/hands_scaphoid_go/cmd/...@latest Quick Verification# After building, verify the installation by running:
+">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1314/getting-started/">
+  <meta property="og:site_name" content="Scaphoid Filesystem Toolkit">
+  <meta property="og:title" content="Getting Started">
+  <meta property="og:description" content="Getting Started with Scaphoid Filesystem Commands# This guide will help you install, build, and start using the Scaphoid filesystem commands toolkit.
+Prerequisites# Go 1.19 or later Git Task runner (optional but recommended) Installing Task Runner# If you don’t have Task installed, you can install it using:
+macOS (Homebrew):
+1 brew install go-task/tap/go-task Other platforms:
+1 go install github.com/go-task/task/v3/cmd/task@latest Installation# Option 1: Clone and Build# 1 2 3 4 5 6 7 8 9 10 # Clone the repository git clone https://github.com/42sol-eu/hands_scaphoid_go.git cd hands_scaphoid_go # Install dependencies and build task deps task build # Optionally install to system PATH task install Option 2: Go Install (coming soon)# 1 go install github.com/42sol-eu/hands_scaphoid_go/cmd/...@latest Quick Verification# After building, verify the installation by running:">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="website">
+
+
+  <meta itemprop="name" content="Getting Started">
+  <meta itemprop="description" content="Getting Started with Scaphoid Filesystem Commands# This guide will help you install, build, and start using the Scaphoid filesystem commands toolkit.
+Prerequisites# Go 1.19 or later Git Task runner (optional but recommended) Installing Task Runner# If you don’t have Task installed, you can install it using:
+macOS (Homebrew):
+1 brew install go-task/tap/go-task Other platforms:
+1 go install github.com/go-task/task/v3/cmd/task@latest Installation# Option 1: Clone and Build# 1 2 3 4 5 6 7 8 9 10 # Clone the repository git clone https://github.com/42sol-eu/hands_scaphoid_go.git cd hands_scaphoid_go # Install dependencies and build task deps task build # Optionally install to system PATH task install Option 2: Go Install (coming soon)# 1 go install github.com/42sol-eu/hands_scaphoid_go/cmd/...@latest Quick Verification# After building, verify the installation by running:">
+  <meta itemprop="datePublished" content="2025-11-23T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-11-23T00:00:00+00:00">
+  <meta itemprop="wordCount" content="465">
+
+<title>Getting Started | Scaphoid Filesystem Toolkit</title>
+<link rel="icon" href="/favicon.png" >
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="http://localhost:1314/getting-started/">
+<link rel="stylesheet" href="/book.min.cc2c524ed250aac81b23d1f4af87344917b325208841feca0968fe450f570575.css" integrity="sha256-zCxSTtJQqsgbI9H0r4c0SRezJSCIQf7KCWj&#43;RQ9XBXU=" crossorigin="anonymous">
+
+
+  <script defer src="/fuse.min.js"></script>
+  <script defer src="/en.search.min.a2e58b0dc7e01ec107ba5bb75489e2ade594e0340b62303438719909860c49e4.js" integrity="sha256-ouWLDcfgHsEHulu3VInireWU4DQLYjA0OHGZCYYMSeQ=" crossorigin="anonymous"></script>
+
+
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1314/getting-started/index.xml" title="Scaphoid Filesystem Toolkit" />
+
+  
+</head>
+<body dir="ltr" class="book-kind-section book-type-getting-started">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    
+<aside class="book-menu">
+  <div class="book-menu-content">
+    
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>Scaphoid Filesystem Toolkit</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input id="book-search-input" type="text" 
+    placeholder="Search"
+    aria-label="Search"
+    maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/commands/" class="">
+      Command Reference</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/examples/" class="">
+      Examples</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/getting-started/" class="active">
+      Getting Started</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+<ul><li><a href="https://github.com/42sol-eu/hands_scaphoid_go" target="_blank" rel="noopener">Project on GitHub</a></li></ul>
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+
+  </div>
+</aside>
+ 
+
+    <div class="book-page">
+      <header class="book-header hidden">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/icons/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>Getting Started</h3>
+
+  <label for="toc-control">
+    
+    <img src="/icons/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#getting-started-with-scaphoid-filesystem-commands">Getting Started with Scaphoid Filesystem Commands</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a>
+          <ul>
+            <li><a href="#installing-task-runner">Installing Task Runner</a></li>
+          </ul>
+        </li>
+        <li><a href="#installation">Installation</a>
+          <ul>
+            <li><a href="#option-1-clone-and-build">Option 1: Clone and Build</a></li>
+            <li><a href="#option-2-go-install-coming-soon">Option 2: Go Install (coming soon)</a></li>
+          </ul>
+        </li>
+        <li><a href="#quick-verification">Quick Verification</a></li>
+        <li><a href="#basic-usage">Basic Usage</a>
+          <ul>
+            <li><a href="#action-first-syntax">Action-First Syntax</a></li>
+            <li><a href="#object-first-syntax">Object-First Syntax</a></li>
+          </ul>
+        </li>
+        <li><a href="#available-commands">Available Commands</a>
+          <ul>
+            <li><a href="#action-commands">Action Commands</a></li>
+            <li><a href="#object-commands">Object Commands</a></li>
+          </ul>
+        </li>
+        <li><a href="#common-flags">Common Flags</a></li>
+        <li><a href="#examples">Examples</a>
+          <ul>
+            <li><a href="#creating-objects">Creating Objects</a></li>
+            <li><a href="#listing-contents">Listing Contents</a></li>
+            <li><a href="#getting-information">Getting Information</a></li>
+          </ul>
+        </li>
+        <li><a href="#next-steps">Next Steps</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="getting-started-with-scaphoid-filesystem-commands">Getting Started with Scaphoid Filesystem Commands<a class="anchor" href="#getting-started-with-scaphoid-filesystem-commands">#</a></h1>
+<p>This guide will help you install, build, and start using the Scaphoid filesystem commands toolkit.</p>
+<h2 id="prerequisites">Prerequisites<a class="anchor" href="#prerequisites">#</a></h2>
+<ul>
+<li>Go 1.19 or later</li>
+<li>Git</li>
+<li>Task runner (optional but recommended)</li>
+</ul>
+<h3 id="installing-task-runner">Installing Task Runner<a class="anchor" href="#installing-task-runner">#</a></h3>
+<p>If you don&rsquo;t have Task installed, you can install it using:</p>
+<p><strong>macOS (Homebrew):</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>brew install go-task/tap/go-task</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>Other platforms:</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>go install github.com/go-task/task/v3/cmd/task@latest</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="installation">Installation<a class="anchor" href="#installation">#</a></h2>
+<h3 id="option-1-clone-and-build">Option 1: Clone and Build<a class="anchor" href="#option-1-clone-and-build">#</a></h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># Clone the repository</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/42sol-eu/hands_scaphoid_go.git
+</span></span><span style="display:flex;"><span><span style="color:#6639ba">cd</span> hands_scaphoid_go
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Install dependencies and build</span>
+</span></span><span style="display:flex;"><span>task deps
+</span></span><span style="display:flex;"><span>task build
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Optionally install to system PATH</span>
+</span></span><span style="display:flex;"><span>task install</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="option-2-go-install-coming-soon">Option 2: Go Install (coming soon)<a class="anchor" href="#option-2-go-install-coming-soon">#</a></h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>go install github.com/42sol-eu/hands_scaphoid_go/cmd/...@latest</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="quick-verification">Quick Verification<a class="anchor" href="#quick-verification">#</a></h2>
+<p>After building, verify the installation by running:</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># List all available tasks</span>
+</span></span><span style="display:flex;"><span>task
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Run demo to test functionality</span>
+</span></span><span style="display:flex;"><span>task run:demo
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Run tests</span>
+</span></span><span style="display:flex;"><span>task test</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="basic-usage">Basic Usage<a class="anchor" href="#basic-usage">#</a></h2>
+<p>The toolkit provides two equivalent command syntaxes:</p>
+<h3 id="action-first-syntax">Action-First Syntax<a class="anchor" href="#action-first-syntax">#</a></h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># Pattern: [action] [object-type] [arguments] [flags]</span>
+</span></span><span style="display:flex;"><span>create directory mydir
+</span></span><span style="display:flex;"><span>list mydir
+</span></span><span style="display:flex;"><span>copy file source.txt dest.txt
+</span></span><span style="display:flex;"><span>delete file unwanted.txt --force</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="object-first-syntax">Object-First Syntax<a class="anchor" href="#object-first-syntax">#</a></h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># Pattern: [object-type] [action] [arguments] [flags]</span>
+</span></span><span style="display:flex;"><span>directory create mydir
+</span></span><span style="display:flex;"><span>directory list mydir
+</span></span><span style="display:flex;"><span>file copy source.txt dest.txt
+</span></span><span style="display:flex;"><span>file delete unwanted.txt --force</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="available-commands">Available Commands<a class="anchor" href="#available-commands">#</a></h2>
+<h3 id="action-commands">Action Commands<a class="anchor" href="#action-commands">#</a></h3>
+<ul>
+<li><strong>create</strong> - Create new filesystem objects</li>
+<li><strong>list</strong> - List contents or properties</li>
+<li><strong>copy</strong> - Copy objects to new locations</li>
+<li><strong>move</strong> - Move or rename objects</li>
+<li><strong>delete</strong> - Remove objects</li>
+<li><strong>info</strong> - Display object information</li>
+<li><strong>compare</strong> - Compare two objects</li>
+<li><strong>backup</strong> - Create backups of objects</li>
+</ul>
+<h3 id="object-commands">Object Commands<a class="anchor" href="#object-commands">#</a></h3>
+<ul>
+<li><strong>directory</strong> - Operations on directories</li>
+<li><strong>file</strong> - Operations on files</li>
+<li><strong>link</strong> - Operations on symbolic links</li>
+<li><strong>archive</strong> - Operations on archive files</li>
+</ul>
+<h2 id="common-flags">Common Flags<a class="anchor" href="#common-flags">#</a></h2>
+<p>Most commands support these common flags:</p>
+<ul>
+<li><code>--force, -f</code> - Force operation, overwrite existing</li>
+<li><code>--recursive, -r</code> - Operate recursively on directories</li>
+<li><code>--help, -h</code> - Show command help</li>
+</ul>
+<h2 id="examples">Examples<a class="anchor" href="#examples">#</a></h2>
+<h3 id="creating-objects">Creating Objects<a class="anchor" href="#creating-objects">#</a></h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># Create a directory</span>
+</span></span><span style="display:flex;"><span>create directory /tmp/testdir
+</span></span><span style="display:flex;"><span>directory create /tmp/testdir
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Create a file</span>
+</span></span><span style="display:flex;"><span>create file /tmp/testfile.txt
+</span></span><span style="display:flex;"><span>file create /tmp/testfile.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Create a symbolic link</span>
+</span></span><span style="display:flex;"><span>create link /tmp/mylink --target /tmp/testfile.txt
+</span></span><span style="display:flex;"><span>link create /tmp/mylink --target /tmp/testfile.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Create an archive</span>
+</span></span><span style="display:flex;"><span>create archive /tmp/backup.tar.gz --source /tmp/testdir
+</span></span><span style="display:flex;"><span>archive create /tmp/backup.tar.gz --source /tmp/testdir</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="listing-contents">Listing Contents<a class="anchor" href="#listing-contents">#</a></h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># List directory contents</span>
+</span></span><span style="display:flex;"><span>list /tmp/testdir
+</span></span><span style="display:flex;"><span>directory list /tmp/testdir
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Long format listing</span>
+</span></span><span style="display:flex;"><span>list /tmp/testdir --long
+</span></span><span style="display:flex;"><span>directory list /tmp/testdir --long
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Include hidden files</span>
+</span></span><span style="display:flex;"><span>list /tmp/testdir --all
+</span></span><span style="display:flex;"><span>directory list /tmp/testdir --all</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="getting-information">Getting Information<a class="anchor" href="#getting-information">#</a></h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># Get file information</span>
+</span></span><span style="display:flex;"><span>info /tmp/testfile.txt
+</span></span><span style="display:flex;"><span>file info /tmp/testfile.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Get detailed information</span>
+</span></span><span style="display:flex;"><span>info /tmp/testfile.txt --all</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="next-steps">Next Steps<a class="anchor" href="#next-steps">#</a></h2>
+<ul>
+<li>Read the <a href="/commands/">Command Reference</a> for detailed documentation</li>
+<li>Check out <a href="/examples/">Examples</a> for common workflows</li>
+<li>Explore the source code on <a href="https://github.com/42sol-eu/hands_scaphoid_go">GitHub</a></li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+<div>
+
+</div>
+
+<div>
+
+</div>
+
+</div>
+
+
+
+  
+
+
+
+  
+  
+  
+  <div class="flex flex-wrap justify-between">
+    <span>
+    
+      <a href="/examples/" class="flex align-center">
+        <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
+        <span>Examples</span>
+      </a>
+    
+    </span>
+    <span>
+    
+    </span>
+  </div>
+  
+
+
+ 
+        
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+        
+        
+  
+ 
+        
+  
+  
+    <script>(function(){document.querySelectorAll("pre:has(code)").forEach(e=>{e.addEventListener("click",e.focus),e.addEventListener("copy",function(t){if(t.preventDefault(),navigator.clipboard){const t=window.getSelection().toString()||e.textContent;navigator.clipboard.writeText(t)}})})})()</script>
+  
+
+      </footer>
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  
+  <aside class="book-toc">
+    <div class="book-toc-content">
+      
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#getting-started-with-scaphoid-filesystem-commands">Getting Started with Scaphoid Filesystem Commands</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a>
+          <ul>
+            <li><a href="#installing-task-runner">Installing Task Runner</a></li>
+          </ul>
+        </li>
+        <li><a href="#installation">Installation</a>
+          <ul>
+            <li><a href="#option-1-clone-and-build">Option 1: Clone and Build</a></li>
+            <li><a href="#option-2-go-install-coming-soon">Option 2: Go Install (coming soon)</a></li>
+          </ul>
+        </li>
+        <li><a href="#quick-verification">Quick Verification</a></li>
+        <li><a href="#basic-usage">Basic Usage</a>
+          <ul>
+            <li><a href="#action-first-syntax">Action-First Syntax</a></li>
+            <li><a href="#object-first-syntax">Object-First Syntax</a></li>
+          </ul>
+        </li>
+        <li><a href="#available-commands">Available Commands</a>
+          <ul>
+            <li><a href="#action-commands">Action Commands</a></li>
+            <li><a href="#object-commands">Object Commands</a></li>
+          </ul>
+        </li>
+        <li><a href="#common-flags">Common Flags</a></li>
+        <li><a href="#examples">Examples</a>
+          <ul>
+            <li><a href="#creating-objects">Creating Objects</a></li>
+            <li><a href="#listing-contents">Listing Contents</a></li>
+            <li><a href="#getting-information">Getting Information</a></li>
+          </ul>
+        </li>
+        <li><a href="#next-steps">Next Steps</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+    </div>
+  </aside>
+  
+ 
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
