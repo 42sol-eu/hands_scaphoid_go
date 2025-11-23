@@ -59,4 +59,7 @@ func init() {
 	// Add formatting commands
 	rootCmd.AddCommand(sectionCmd)
 	rootCmd.AddCommand(separatorCmd)
+	
+	// Add interactive command
+	rootCmd.AddCommand(interactiveCmd)
 }

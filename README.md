@@ -246,6 +246,33 @@ task test:integration
 task bench
 ```
 
+## Interactive Prompts
+
+Scaphoid supports **interactive user prompts** for a better user experience:
+
+- **Confirmations**: Ask yes/no questions (e.g., "Delete this file?")
+- **Selections**: Choose from a list of options
+- **Multi-select**: Choose multiple options
+- **Text input**: Collect user input
+- **Password**: Secure password entry
+
+Example:
+```bash
+# Delete with confirmation prompt
+$ scaphoid file delete important.txt
+? Delete important.txt? (y/N) y
+
+# Interactive object type selection
+$ scaphoid create myfile.txt
+? Select object type: 
+  ▸ file
+    directory
+    link
+    archive
+```
+
+See [docs/INTERACTIVE_PROMPTS.md](docs/INTERACTIVE_PROMPTS.md) for full details.
+
 ## Color Customization
 
 Scaphoid supports **colored output** with bold text that can be customized via a `.scaphoid.yaml` configuration file. The tool automatically colorizes:

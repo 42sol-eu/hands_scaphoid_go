@@ -125,6 +125,19 @@ var fileDeleteCmd = &cobra.Command{
 			fmt.Fprintf(os.Stderr, "[VERBOSE] Force: %v\n", force)
 		}
 		
+		// Interactive confirmation if not forced
+		if !force {
+			confirmed, err := Confirm(fmt.Sprintf("Delete %s?", args[0]), false)
+			if err != nil {
+				fmt.Fprintln(os.Stderr, formatErrorMessage(fmt.Sprintf("Error: %v", err)))
+				os.Exit(1)
+			}
+			if !confirmed {
+				fmt.Println(wrapErrorMessage("Operation cancelled by user"))
+				os.Exit(1)
+			}
+		}
+		
 		action := &actions.DeleteAction{
 			Force: force,
 		}
