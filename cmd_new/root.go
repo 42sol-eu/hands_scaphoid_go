@@ -55,4 +55,8 @@ func init() {
 	rootCmd.AddCommand(listCmd)
 	rootCmd.AddCommand(createCmd)
 	rootCmd.AddCommand(existsCmd)
+	
+	// Add formatting commands
+	rootCmd.AddCommand(sectionCmd)
+	rootCmd.AddCommand(separatorCmd)
 }

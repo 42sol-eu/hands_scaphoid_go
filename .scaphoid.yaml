@@ -32,3 +32,23 @@ colors:
 
 # Valid color values: black, red, green, yellow, blue, magenta, cyan, white
 # Set bold to true or false for each color category
+
+# Output formatting options
+formatting:
+  # Enable markdown-like formatting for console output
+  # When true, success messages are prefixed with '- ' and errors with '> '
+  markdown: true
+  
+  # Prefix for successful operations (markdown list item by default)
+  success_prefix: "- ✓ "
+  
+  # Prefix for error messages (markdown blockquote by default)
+  error_prefix: "> ✗ "
+  
+  heading_prefix: "\n## "  # Markdown heading prefix for section titles
+
+  # Alternative options:
+  # success_prefix: "✓ "  # Checkmark emoji
+  # error_prefix: "✗ "    # X mark emoji
+  # success_prefix: "* "  # Alternative markdown list
+  # error_prefix: "! "    # Warning style

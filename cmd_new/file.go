@@ -35,7 +35,7 @@ var fileCreateCmd = &cobra.Command{
 		if result.Success {
 			fmt.Println(formatCreateMessage("file", args[0]))
 		} else {
-			fmt.Fprintln(os.Stderr, colorizeError(fmt.Sprintf("Error: %v", result.Error)))
+			fmt.Fprintln(os.Stderr, formatErrorMessage(fmt.Sprintf("Error: %v", result.Error)))
 			os.Exit(1)
 		}
 	},
@@ -87,7 +87,7 @@ var fileCopyCmd = &cobra.Command{
 		if result.Success {
 			fmt.Println(formatCopyMoveMessage("copied", args[0], args[1]))
 		} else {
-			fmt.Fprintln(os.Stderr, colorizeError(fmt.Sprintf("Error: %v", result.Error)))
+			fmt.Fprintln(os.Stderr, formatErrorMessage(fmt.Sprintf("Error: %v", result.Error)))
 			os.Exit(1)
 		}
 	},
@@ -133,7 +133,7 @@ var fileDeleteCmd = &cobra.Command{
 		if result.Success {
 			fmt.Println(formatSuccessMessage("deleted", args[0]))
 		} else {
-			fmt.Fprintln(os.Stderr, colorizeError(fmt.Sprintf("Error: %v", result.Error)))
+			fmt.Fprintln(os.Stderr, formatErrorMessage(fmt.Sprintf("Error: %v", result.Error)))
 			os.Exit(1)
 		}
 	},

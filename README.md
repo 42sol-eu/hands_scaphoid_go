@@ -246,6 +246,50 @@ task test:integration
 task bench
 ```
 
+## Color Customization
+
+Scaphoid supports **colored output** with bold text that can be customized via a `.scaphoid.yaml` configuration file. The tool automatically colorizes:
+
+- **Action verbs** (exists, create, delete, etc.) - Blue by default
+- **Filesystem types** (file, directory, link, archive) - Green by default
+- **Paths** - Green by default, shown in double quotes
+- **Error messages** - Red by default
+
+Place a `.scaphoid.yaml` file in your current directory, home directory, or `/etc/scaphoid/` to customize the colors. See [docs/COLOR_CONFIG.md](docs/COLOR_CONFIG.md) for full configuration details.
+
+Example output:
+```bash
+$ scaphoid file exists README.md
+"README.md" exists and is a file
+# "README.md" appears in green, "exists" in blue, "file" in green
+```
+
+## Markdown Output Formatting
+
+Scaphoid supports **markdown-like console output** for better readability and documentation generation:
+
+- **Success messages**: Automatically prefixed with `- ` (unordered list)
+- **Error messages**: Automatically prefixed with `> ` (blockquote)
+- **Section headers**: `scaphoid section "Title" ["details"]` outputs `## Title\ndetails\n`
+- **Separators**: `scaphoid separator` outputs `---`
+
+This makes it easy to generate documentation directly from command execution. See [docs/MARKDOWN_OUTPUT.md](docs/MARKDOWN_OUTPUT.md) for examples.
+
+Example:
+```bash
+$ scaphoid section "File Operations"
+## File Operations
+
+$ scaphoid file create test.txt
+- Successfully created file at "test.txt"
+
+$ scaphoid file exists /nonexistent.txt
+> "/nonexistent.txt" does not exist
+
+$ scaphoid separator
+---
+```
+
 ## Project Structure
 
 ```
@@ -257,11 +301,15 @@ task bench
 │   ├── directory.go     # Directory subcommands
 │   ├── link.go          # Link subcommands
 │   ├── archive.go       # Archive subcommands
-│   └── general.go       # General commands
+│   ├── general.go       # General commands
+│   ├── exists.go        # Exists commands
+│   └── colors.go        # Color configuration
 ├── pkg/
 │   ├── actions/         # Action implementations
 │   └── fsobj/           # Filesystem object abstractions
 ├── tests/               # Tests
 ├── docs/                # Documentation
+│   └── COLOR_CONFIG.md  # Color customization guide
+├── .scaphoid.yaml       # Default color config
 └── Taskfile.yaml        # Task definitions
 ```

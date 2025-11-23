@@ -45,7 +45,7 @@ var fileExistsCmd = &cobra.Command{
 
 		obj, err := fsobj.NewFSObject(args[0])
 		if err != nil {
-			fmt.Fprintln(os.Stderr, colorizeError(fmt.Sprintf("Error: %v", err)))
+			fmt.Fprintln(os.Stderr, formatErrorMessage(fmt.Sprintf("Error: %v", err)))
 			os.Exit(1)
 		}
 
@@ -73,7 +73,7 @@ var directoryExistsCmd = &cobra.Command{
 
 		obj, err := fsobj.NewFSObject(args[0])
 		if err != nil {
-			fmt.Fprintln(os.Stderr, colorizeError(fmt.Sprintf("Error: %v", err)))
+			fmt.Fprintln(os.Stderr, formatErrorMessage(fmt.Sprintf("Error: %v", err)))
 			os.Exit(1)
 		}
 
@@ -101,7 +101,7 @@ var linkExistsCmd = &cobra.Command{
 
 		obj, err := fsobj.NewFSObject(args[0])
 		if err != nil {
-			fmt.Fprintln(os.Stderr, colorizeError(fmt.Sprintf("Error: %v", err)))
+			fmt.Fprintln(os.Stderr, formatErrorMessage(fmt.Sprintf("Error: %v", err)))
 			os.Exit(1)
 		}
 

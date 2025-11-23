@@ -29,9 +29,9 @@ var directoryCreateCmd = &cobra.Command{
 
 		result := action.Execute(fsobj.TypeDirectory, args[0], nil)
 		if result.Success {
-			fmt.Println(result.Message)
+			fmt.Println(wrapSuccessMessage(result.Message))
 		} else {
-			fmt.Fprintf(os.Stderr, "Error: %v\n", result.Error)
+			fmt.Fprintln(os.Stderr, formatErrorMessage(fmt.Sprintf("Error: %v", result.Error)))
 			os.Exit(1)
 		}
 	},
@@ -64,7 +64,7 @@ var directoryListCmd = &cobra.Command{
 				}
 			}
 		} else {
-			fmt.Fprintf(os.Stderr, "Error: %v\n", result.Error)
+			fmt.Fprintln(os.Stderr, formatErrorMessage(fmt.Sprintf("Error: %v", result.Error)))
 			os.Exit(1)
 		}
 	},
@@ -84,9 +84,9 @@ var directoryCopyCmd = &cobra.Command{
 
 		result := action.Execute(args[0], args[1])
 		if result.Success {
-			fmt.Println(result.Message)
+			fmt.Println(wrapSuccessMessage(result.Message))
 		} else {
-			fmt.Fprintf(os.Stderr, "Error: %v\n", result.Error)
+			fmt.Fprintln(os.Stderr, formatErrorMessage(fmt.Sprintf("Error: %v", result.Error)))
 			os.Exit(1)
 		}
 	},
@@ -104,9 +104,9 @@ var directoryMoveCmd = &cobra.Command{
 
 		result := action.Execute(args[0], args[1])
 		if result.Success {
-			fmt.Println(result.Message)
+			fmt.Println(wrapSuccessMessage(result.Message))
 		} else {
-			fmt.Fprintf(os.Stderr, "Error: %v\n", result.Error)
+			fmt.Fprintln(os.Stderr, formatErrorMessage(fmt.Sprintf("Error: %v", result.Error)))
 			os.Exit(1)
 		}
 	},
@@ -126,9 +126,9 @@ var directoryDeleteCmd = &cobra.Command{
 
 		result := action.Execute(args[0])
 		if result.Success {
-			fmt.Println(result.Message)
+			fmt.Println(wrapSuccessMessage(result.Message))
 		} else {
-			fmt.Fprintf(os.Stderr, "Error: %v\n", result.Error)
+			fmt.Fprintln(os.Stderr, formatErrorMessage(fmt.Sprintf("Error: %v", result.Error)))
 			os.Exit(1)
 		}
 	},
@@ -157,7 +157,7 @@ var directoryInfoCmd = &cobra.Command{
 				}
 			}
 		} else {
-			fmt.Fprintf(os.Stderr, "Error: %v\n", result.Error)
+			fmt.Fprintln(os.Stderr, formatErrorMessage(fmt.Sprintf("Error: %v", result.Error)))
 			os.Exit(1)
 		}
 	},
@@ -184,14 +184,14 @@ var directoryCompareCmd = &cobra.Command{
 
 		result := action.Execute(args[0], args[1])
 		if result.Success {
-			fmt.Println(result.Message)
+			fmt.Println(wrapSuccessMessage(result.Message))
 			if comparison, ok := result.Data.(map[string]interface{}); ok {
 				for key, value := range comparison {
 					fmt.Printf("%s: %v\n", key, value)
 				}
 			}
 		} else {
-			fmt.Fprintf(os.Stderr, "Error: %v\n", result.Error)
+			fmt.Fprintln(os.Stderr, formatErrorMessage(fmt.Sprintf("Error: %v", result.Error)))
 			os.Exit(1)
 		}
 	},
@@ -216,9 +216,9 @@ var directoryBackupCmd = &cobra.Command{
 
 		result := action.Execute(args[0], args[1])
 		if result.Success {
-			fmt.Println(result.Message)
+			fmt.Println(wrapSuccessMessage(result.Message))
 		} else {
-			fmt.Fprintf(os.Stderr, "Error: %v\n", result.Error)
+			fmt.Fprintln(os.Stderr, formatErrorMessage(fmt.Sprintf("Error: %v", result.Error)))
 			os.Exit(1)
 		}
 	},

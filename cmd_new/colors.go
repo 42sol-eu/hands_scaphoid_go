@@ -68,6 +68,27 @@ func setDefaultColors() {
 	viper.SetDefault("colors.path.bold", true)
 	viper.SetDefault("colors.keyword.color", "green")
 	viper.SetDefault("colors.keyword.bold", true)
+	
+	// Formatting defaults
+	viper.SetDefault("formatting.markdown", true)
+	viper.SetDefault("formatting.success_prefix", "- ")
+	viper.SetDefault("formatting.error_prefix", "> ")
+}
+
+// getPrefix returns the appropriate prefix based on message type
+func getPrefix(messageType string) string {
+	if !viper.GetBool("formatting.markdown") {
+		return ""
+	}
+	
+	switch messageType {
+	case "success":
+		return viper.GetString("formatting.success_prefix")
+	case "error":
+		return viper.GetString("formatting.error_prefix")
+	default:
+		return ""
+	}
 }
 
 // initializeColors creates color functions from configuration
@@ -154,42 +175,78 @@ func colorizeNotExist(msg string) string {
 // formatExistsMessage formats existence messages with colors
 func formatExistsMessage(path string, exists bool, objType string) string {
 	coloredPath := colorizePath(path)
+	var msg string
 	if exists {
 		if objType != "" {
-			return fmt.Sprintf("%s %s (type: %s)", coloredPath, colorizeAction("exists"), colorizeType(objType))
+			msg = fmt.Sprintf("%s %s (type: %s)", coloredPath, colorizeAction("exists"), colorizeType(objType))
+		} else {
+			msg = fmt.Sprintf("%s %s", coloredPath, colorizeAction("exists"))
 		}
-		return fmt.Sprintf("%s %s", coloredPath, colorizeAction("exists"))
+		return getPrefix("success") + msg
 	}
-	return fmt.Sprintf("%s does %s %s", coloredPath, colorizeNotExist("not"), colorizeAction("exist"))
+	msg = fmt.Sprintf("%s does %s %s", coloredPath, colorizeNotExist("not"), colorizeAction("exist"))
+	return getPrefix("error") + msg
 }
 
 // formatTypeCheckMessage formats type-specific existence messages with colors
 func formatTypeCheckMessage(path string, exists bool, expectedType string, actualType string) string {
 	coloredPath := colorizePath(path)
+	var msg string
 	if exists && actualType == expectedType {
-		return fmt.Sprintf("%s %s and is a %s", coloredPath, colorizeAction("exists"), colorizeType(expectedType))
+		msg = fmt.Sprintf("%s %s and is a %s", coloredPath, colorizeAction("exists"), colorizeType(expectedType))
+		return getPrefix("success") + msg
 	} else if exists {
-		return fmt.Sprintf("%s %s but is %s a %s (it's a %s)", 
+		msg = fmt.Sprintf("%s %s but is %s a %s (it's a %s)", 
 			coloredPath,
 			colorizeAction("exists"),
 			colorizeNotExist("not"), 
 			colorizeType(expectedType),
 			colorizeType(actualType))
+		return getPrefix("error") + msg
 	}
-	return fmt.Sprintf("%s does %s %s", coloredPath, colorizeNotExist("not"), colorizeAction("exist"))
+	msg = fmt.Sprintf("%s does %s %s", coloredPath, colorizeNotExist("not"), colorizeAction("exist"))
+	return getPrefix("error") + msg
 }
 
 // formatSuccessMessage formats success messages with colored action
 func formatSuccessMessage(action string, path string) string {
-	return fmt.Sprintf("Successfully %s %s", colorizeAction(action), colorizePath(path))
+	msg := fmt.Sprintf("Successfully %s %s", colorizeAction(action), colorizePath(path))
+	return getPrefix("success") + msg
 }
 
 // formatCreateMessage formats create messages with colored action and path
 func formatCreateMessage(objType string, path string) string {
-	return fmt.Sprintf("Successfully %s %s at %s", colorizeAction("created"), colorizeType(objType), colorizePath(path))
+	msg := fmt.Sprintf("Successfully %s %s at %s", colorizeAction("created"), colorizeType(objType), colorizePath(path))
+	return getPrefix("success") + msg
 }
 
 // formatCopyMoveMessage formats copy/move messages with colored paths
 func formatCopyMoveMessage(action string, source string, dest string) string {
-	return fmt.Sprintf("Successfully %s %s to %s", colorizeAction(action), colorizePath(source), colorizePath(dest))
+	msg := fmt.Sprintf("Successfully %s %s to %s", colorizeAction(action), colorizePath(source), colorizePath(dest))
+	return getPrefix("success") + msg
+}
+
+// formatErrorMessage formats error messages with prefix
+func formatErrorMessage(errMsg string) string {
+	return getPrefix("error") + colorizeError(errMsg)
+}
+
+// formatSectionHeader formats section headers as markdown
+func formatSectionHeader(title string, details string) string {
+	var output string = ""
+	output = fmt.Sprintf("%s%s\n", viper.GetString("formatting.heading_prefix"), title)
+	if details != "" {
+		output += fmt.Sprintf("%s\n", details)
+	}
+	return output
+}
+
+// wrapSuccessMessage wraps a raw success message with markdown prefix
+func wrapSuccessMessage(msg string) string {
+	return getPrefix("success") + msg
+}
+
+// wrapErrorMessage wraps a raw error message with markdown prefix
+func wrapErrorMessage(msg string) string {
+	return getPrefix("error") + msg
 }
