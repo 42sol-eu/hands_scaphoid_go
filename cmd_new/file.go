@@ -27,6 +27,12 @@ var fileCreateCmd = &cobra.Command{
 			fmt.Fprintf(os.Stderr, "[VERBOSE] Force: %v\n", force)
 		}
 		
+		// Validate naming rules
+		if err := validateNamingRules(args[0], fsobj.TypeFile); err != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", formatErrorMessage(err.Error()))
+			os.Exit(1)
+		}
+		
 		action := &actions.CreateAction{
 			Force: force,
 		}

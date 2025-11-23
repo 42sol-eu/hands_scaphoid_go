@@ -23,6 +23,12 @@ var archiveCreateCmd = &cobra.Command{
 		force, _ := cmd.Flags().GetBool("force")
 		source, _ := cmd.Flags().GetString("source")
 
+		// Validate naming rules
+		if err := validateNamingRules(args[0], fsobj.TypeArchive); err != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", formatErrorMessage(err.Error()))
+			os.Exit(1)
+		}
+
 		action := &actions.CreateAction{
 			Force: force,
 		}

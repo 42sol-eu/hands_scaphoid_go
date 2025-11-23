@@ -73,6 +73,7 @@ func setDefaultColors() {
 	viper.SetDefault("formatting.markdown", true)
 	viper.SetDefault("formatting.success_prefix", "- ")
 	viper.SetDefault("formatting.error_prefix", "> ")
+	viper.SetDefault("formatting.numbered_list", true)
 }
 
 // getPrefix returns the appropriate prefix based on message type
@@ -248,5 +249,30 @@ func wrapSuccessMessage(msg string) string {
 
 // wrapErrorMessage wraps a raw error message with markdown prefix
 func wrapErrorMessage(msg string) string {
+	return getPrefix("error") + msg
+}
+
+// getNumberedPrefix returns a numbered prefix (1. 2. 3. etc.) if in batch mode
+func getNumberedPrefix(index int, total int) string {
+	if !viper.GetBool("formatting.markdown") || !viper.GetBool("formatting.numbered_list") {
+		return ""
+	}
+	// Only use numbered lists for multiple items
+	if total > 1 {
+		return fmt.Sprintf("%d. ", index+1)
+	}
+	return getPrefix("success")
+}
+
+// wrapSuccessMessageNumbered wraps a success message with numbered prefix for batch operations
+func wrapSuccessMessageNumbered(msg string, index int, total int) string {
+	return getNumberedPrefix(index, total) + msg
+}
+
+// wrapErrorMessageNumbered wraps an error message with numbered prefix for batch operations
+func wrapErrorMessageNumbered(msg string, index int, total int) string {
+	if total > 1 {
+		return fmt.Sprintf("%d. ", index+1) + msg
+	}
 	return getPrefix("error") + msg
 }

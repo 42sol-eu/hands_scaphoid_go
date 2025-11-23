@@ -179,8 +179,9 @@ var listCmd = &cobra.Command{
 		result := action.Execute(args[0])
 		if result.Success {
 			if output, ok := result.Data.([]string); ok {
-				for _, line := range output {
-					fmt.Println(line)
+				total := len(output)
+				for i, line := range output {
+					fmt.Println(wrapSuccessMessageNumbered(line, i, total))
 				}
 			}
 		} else {
@@ -191,12 +192,13 @@ var listCmd = &cobra.Command{
 }
 
 var createCmd = &cobra.Command{
-	Use:   "create [type] [path]",
+	Use:   "create [type] <path>",
 	Short: "Create filesystem objects",
 	Long: `Create files, directories, links, archives, and other filesystem objects.
 
-Type can be one of: file, directory, link, archive`,
-	Args: cobra.ExactArgs(2),
+Type can be one of: file, directory, link, archive
+If type is omitted, you will be prompted to select one interactively.`,
+	Args: cobra.RangeArgs(1, 2),
 	Run: func(cmd *cobra.Command, args []string) {
 		force, _ := cmd.Flags().GetBool("force")
 		recursive, _ := cmd.Flags().GetBool("recursive")
@@ -208,9 +210,31 @@ Type can be one of: file, directory, link, archive`,
 			Recursive: recursive,
 		}
 
+		var typeArg, pathArg string
+		
+		// Determine if we have type and path, or just path
+		if len(args) == 2 {
+			typeArg = args[0]
+			pathArg = args[1]
+		} else {
+			// Only path provided, prompt for type
+			choice, err := Select("Select object type to create:", []string{
+				"file",
+				"directory",
+				"link",
+				"archive",
+			})
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+				os.Exit(1)
+			}
+			typeArg = choice
+			pathArg = args[0]
+		}
+
 		// Parse the type argument
 		var fsType fsobj.ObjectType
-		switch args[0] {
+		switch typeArg {
 		case "file", "f":
 			fsType = fsobj.TypeFile
 		case "directory", "dir", "d":
@@ -220,7 +244,13 @@ Type can be one of: file, directory, link, archive`,
 		case "archive", "a":
 			fsType = fsobj.TypeArchive
 		default:
-			fmt.Fprintf(os.Stderr, "Error: unknown type '%s'. Valid types: file, directory, link, archive\n", args[0])
+			fmt.Fprintf(os.Stderr, "Error: unknown type '%s'. Valid types: file, directory, link, archive\n", typeArg)
+			os.Exit(1)
+		}
+
+		// Validate naming rules
+		if err := validateNamingRules(pathArg, fsType); err != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", formatErrorMessage(err.Error()))
 			os.Exit(1)
 		}
 
@@ -233,7 +263,7 @@ Type can be one of: file, directory, link, archive`,
 			options["source"] = source
 		}
 
-		result := action.Execute(fsType, args[1], options)
+		result := action.Execute(fsType, pathArg, options)
 		if result.Success {
 			fmt.Println(result.Message)
 		} else {

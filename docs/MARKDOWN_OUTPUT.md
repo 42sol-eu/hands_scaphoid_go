@@ -10,6 +10,7 @@ When markdown formatting is enabled (default), all output is automatically prefi
 
 - **Success messages**: Prefixed with `- ` (unordered list item)
 - **Error messages**: Prefixed with `> ` (blockquote)
+- **Numbered lists**: For batch operations with multiple items (e.g., `list` command), items are numbered `1. `, `2. `, `3. `, etc.
 
 ### Section Headers
 
@@ -42,6 +43,9 @@ Markdown formatting is controlled via `.scaphoid.yaml`:
 formatting:
   # Enable/disable markdown-like formatting
   markdown: true
+  
+  # Use numbered lists for batch operations (e.g., list command)
+  numbered_list: true
   
   # Customize prefixes
   success_prefix: "- "
@@ -249,11 +253,41 @@ When piped to a file or viewed in a markdown renderer, the formatting remains cl
      markdown: false
    ```
 
+### 5. Numbered Lists for Batch Operations
+
+When listing multiple items, Scaphoid automatically uses numbered lists:
+
+```bash
+scaphoid list /tmp
+```
+
+**Output:**
+```markdown
+1. file1.txt
+2. file2.txt
+3. directory1
+4. directory2
+5. link1
+```
+
+This feature is controlled by `formatting.numbered_list` in config:
+
+```yaml
+formatting:
+  numbered_list: true  # Use numbered lists for multiple items
+```
+
+When `numbered_list` is `false`, regular bullet points are used instead:
+
+```markdown
+- file1.txt
+- file2.txt
+- directory1
+```
+
 ## Future Enhancements
 
 Planned features include:
-
-- Numbered list support for batch operations
 - Code block formatting for verbose output
 - Optional emoji/icon prefixes (✓, ✗, ℹ, ⚠)
 - Info and warning message types

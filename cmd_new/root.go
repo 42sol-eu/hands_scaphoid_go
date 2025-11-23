@@ -60,6 +60,9 @@ func init() {
 	rootCmd.AddCommand(sectionCmd)
 	rootCmd.AddCommand(separatorCmd)
 	
-	// Add interactive command
+	// Add interactive demo command
 	rootCmd.AddCommand(interactiveCmd)
+	
+	// Add naming check command
+	rootCmd.AddCommand(checkCmd)
 }

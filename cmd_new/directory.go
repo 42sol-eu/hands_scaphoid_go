@@ -22,6 +22,13 @@ var directoryCreateCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		force, _ := cmd.Flags().GetBool("force")
 		recursive, _ := cmd.Flags().GetBool("recursive")
+		
+		// Validate naming rules
+		if err := validateNamingRules(args[0], fsobj.TypeDirectory); err != nil {
+			fmt.Fprintf(os.Stderr, "%s\n", formatErrorMessage(err.Error()))
+			os.Exit(1)
+		}
+		
 		action := &actions.CreateAction{
 			Force:     force,
 			Recursive: recursive,

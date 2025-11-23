@@ -2,6 +2,12 @@
 
 This repository contains the Go implementation of Scaphoid, a unified command-line interface for filesystem operations. Scaphoid provides a comprehensive and consistent interface for managing files, directories, symbolic links, and archives using the Cobra library.
 
+> **📖 Quick Links**
+> - [Features Summary](docs/FEATURES_SUMMARY.md) - Complete overview of all features
+> - [Markdown Output Guide](docs/MARKDOWN_OUTPUT.md) - Markdown formatting documentation
+> - [Interactive Prompts Guide](docs/INTERACTIVE_PROMPTS.md) - Interactive user prompts
+> - [Color Configuration](docs/COLOR_CONFIG.md) - Customize colors and styling
+
 ## Features
 
 ### Unified CLI with Cobra

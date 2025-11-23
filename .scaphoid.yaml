@@ -33,11 +33,59 @@ colors:
 # Valid color values: black, red, green, yellow, blue, magenta, cyan, white
 # Set bold to true or false for each color category
 
+# Naming rules validation
+naming_rules:
+  # Enable/disable naming rules validation
+  enabled: true
+  
+  # Block operations on MUST violations (errors)
+  # If false, MUST violations will be treated as warnings
+  enforce_must: true
+  
+  # Show warnings for WANT violations
+  show_warnings: true
+  
+  # Enable/disable specific rules
+  # Set to false to disable a rule
+  rules:
+    prefer_iso_dates: true  # Suggest ISO 8601 dates (YYYY-MM-DD) in filenames
+  
+  # Blacklist directories to skip during recursive checks
+  # These directories will not be checked and their contents will be ignored
+  blacklist:
+    - ".git"           # Git repository metadata
+    - ".svn"           # SVN repository metadata
+    - ".hg"            # Mercurial repository metadata
+    - "node_modules"   # Node.js dependencies
+    - "__pycache__"    # Python bytecode cache
+    - ".venv"          # Python virtual environment
+    - "venv"           # Python virtual environment
+    - ".tox"           # Tox testing environments
+    - "dist"           # Distribution builds
+    - "build"          # Build output
+    - ".cache"         # Cache directories
+    - ".pytest_cache"  # Pytest cache
+    - ".mypy_cache"    # MyPy cache
+    - ".ruff_cache"    # Ruff cache
+  
+  # Custom rules (optional)
+  # custom:
+  #   - name: "no-uppercase"
+  #     description: "File names should not contain uppercase letters"
+  #     severity: "WANT"  # MUST or WANT
+  #     applies: "file"   # file, directory, link, archive
+  #     pattern: "[A-Z]"  # Regex pattern (matches = violation)
+  #     message: "File name contains uppercase letters"
+
 # Output formatting options
 formatting:
   # Enable markdown-like formatting for console output
   # When true, success messages are prefixed with '- ' and errors with '> '
   markdown: true
+  
+  # Use numbered lists for batch operations (list command with multiple items)
+  # When true, multiple items will be numbered (1. 2. 3.) instead of using bullet points
+  numbered_list: true
   
   # Prefix for successful operations (markdown list item by default)
   success_prefix: "- ✓ "
